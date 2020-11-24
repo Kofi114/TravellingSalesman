@@ -37,12 +37,11 @@ indicatorForbidden <- function(C,p,q){
   }
   return(1)
 }
-
 S <- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
 rejection_counter = 0
 for(i in 1:n){
-  P <- sample(1:20,size=1, prob=D[x[i],]) #sampling from distance matrix for now
-  Q <- sample(1:20,size=1, prob=D[x[i],]) #likewise for proposed state
+  P <- sample(1:20,size=1) #basic sampling 
+  Q <- sample(1:20,size=1) #likewise for proposed state
   index_p = match(P, unlist(S[i])) #the position of P in the sequence
   index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
   k <- unlist(S[i])
