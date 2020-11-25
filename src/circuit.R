@@ -2,8 +2,8 @@ U <-c(1:20) #state space
 D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
 D[4,6] = 0
 D[9,13]= 0
-D[19,1]= 0 #WTF!
-D[17,10]= 0  #WTF!
+D[1,19]= 0 
+D[10,17]= 0  
 D[3,8] = 0 #NO TRAVEL NO DISTANCE
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
@@ -53,7 +53,7 @@ j <- 1
 travel_time <- rep(0, m-n+1)
 while(i <= m){
   P <- sample(1:20,size=1) #basic sampling 
-  Q <- sample(1:20,size=1) #likewise for proposed state
+  Q <- sample(1:20,size=1) #likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
   index_p = match(P, unlist(S[i])) #the position of P in the sequence
   index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
   k <- unlist(S[i])
@@ -62,7 +62,7 @@ while(i <= m){
       travel_time[j] = return_time(S[i])
       j <- j + 1
     }
-    S[i+1] <- list(c(replace(k, c(P,Q), k[c(Q,P)]))) #adds a new sequence to S interchanging P and Q 
+    S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
     i <- i + 1
     #return(S[i+1])
   }
@@ -70,18 +70,18 @@ while(i <= m){
     rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
 }
-  answer = mean(travel_time)
-  print(length(travel_time))
-  print(rejection_counter)
-  return(answer)
+   answer = mean(travel_time)*(m-n+1)/(m+1)
+   print(length(travel_time))
+   print(rejection_counter)
+   return(answer)
 }
 
 tspMCMC(100,200)
-tspMCMC(200,400)
-tspMCMC(400,800)
-tspMCMC(800,1600)
-tspMCMC(1600,3200)
-tspMCMC(3200,6400)
-tspMCMC(20000,40000)
-tspMCMC(200000,400000)
-
+# tspMCMC(200,400)
+# tspMCMC(400,800)
+# tspMCMC(800,1600)
+# tspMCMC(1600,3200)
+# tspMCMC(3200,6400)
+# tspMCMC(20000,40000)
+# tspMCMC(80000,160000)
+#tspMCMC(300000,600000)
