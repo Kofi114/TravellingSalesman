@@ -1,0 +1,44 @@
+---
+title: "TravellingSalesman"
+output: html_document
+---
+Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
+
+Task 1: Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.
+
+Content Follows below. Here is an attempt at R code output
+
+```{r eval=FALSE}
+indicatorPermissible <- function(C,p,q){
+  if(p != 1 && p!= 20 && q!= 1 && q!= 20){ #normal interchange
+    for(i in c(-1,1)){
+      if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
+        return(0)
+      }
+    }
+  }
+  else{#case where interchange occurs at one or both of the endpoints of sequence
+    if(p == 1){
+      if(D[C[20],C[q]] == 0 || D[C[2],C[q]] == 0)
+        return(0)
+    }
+    else if(p == 20){
+      if(D[C[1],C[q]] == 0 || D[C[19],C[q]] == 0)
+        return(0)
+    }
+    else if(q==1){
+      if(D[C[20],C[p]] == 0 || D[C[2],C[p]] == 0)
+        return(0)
+    }
+    else{
+      if(D[C[1],C[p]] == 0 || D[C[19],C[p]] == 0)
+        return(0)
+    }
+  }
+  return(1)
+}
+
+```
+This is code that checks if we need to reject an interchange.
+
+
