@@ -1,0 +1,10 @@
+name: "Travelling Salesman"
+output_dir: "."
+navbar:
+  title: "Travelling Salesman"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+
