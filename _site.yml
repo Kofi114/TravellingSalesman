@@ -1,5 +1,5 @@
 name: "Travelling Salesman"
-output_dir: "."
+output_dir: "docs"
 navbar:
   title: "Travelling Salesman"
   left:
