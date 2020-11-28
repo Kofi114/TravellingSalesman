@@ -1,5 +1,27 @@
 ---
-title: "Home Page"
+title: "Travelling Salesman"
 ---
 
-The objective of our project is to use a Metropolis algorithm with $\mu=1$ and finds the expected travel time for a circuit chosen uniformly. There will be five pair of cities for which travel is forbidden. Since there are about ~$20!$ possible circuits the generator is constructed by choosing 2 numbers uniformly from 1:20 from a valid sequence and interchange them to create a sequence given the proposed sequence is also valid.  
+```{r setup, include= FALSE}
+library(igraph)
+
+```
+The objective of our project is to use a Metropolis algorithm with $\mu=1$ to simulate the expected travel time for a Hamiltonian circuit chosen uniformly. A Hamiltonian circuit is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point.
+
+
+There will be five pair of cities for which travel is forbidden. Since there are about ~$20!$ possible circuits(see visual below) the generator is constructed by choosing 2 cities uniformly from c(1:20) from a valid sequence and interchanging them to create a brand new sequence given the proposed sequence granted it is also valid.  
+```{r echo=FALSE, webgl=TRUE, fig.width=12, fig.height=12}
+D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
+D[4,6] = 0
+D[9,13]= 0
+D[1,19]= 0 
+D[10,17]= 0  
+D[3,8] = 0 #NO TRAVEL NO DISTANCE
+D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
+diag(D) <- rep(0,20) #diagonals are 0
+
+g <- graph_from_adjacency_matrix(D, mode="undirected" , weighted=TRUE)
+plot(g, vertex.color="red")
+
+```
+
