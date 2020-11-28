@@ -1,0 +1,5 @@
+---
+title: "Home Page"
+---
+
+The objective of our project is to use a Metropolis algorithm with $\mu=1$ and finds the expected travel time for a circuit chosen uniformly. There will be five pair of cities for which travel is forbidden. Since there are about ~$20!$ possible circuits the generator is constructed by choosing 2 numbers uniformly from 1:20 from a valid sequence and interchange them to create a sequence given the proposed sequence is also valid.  

@@ -1,7 +1,7 @@
 name: "Travelling Salesman"
 output_dir: "docs"
 navbar:
-  title: "Travelling Salesman"
+  title: Travelling Salesman
   left:
     - text: "Task 1"
       href: task1.html
