@@ -1,11 +1,7 @@
 ---
-title: "TravellingSalesman"
+title: "Analysis"
 ---
-Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
 
-Task 1: Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.
-
-Content Follows below. Here is an attempt at R code output
 
 ```{r eval=FALSE}
 indicatorPermissible <- function(C,p,q){
@@ -39,5 +35,3 @@ indicatorPermissible <- function(C,p,q){
 
 ```
 This is code that checks if we need to reject an interchange.
-
-

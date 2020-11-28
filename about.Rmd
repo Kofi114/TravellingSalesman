@@ -1,5 +1,0 @@
----
-title: "About the Page"
----
-
-Hello and welcome to our page.

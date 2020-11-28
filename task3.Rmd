@@ -1,0 +1,4 @@
+---
+title: "Task3"
+---
+Check that $Q$ is symmetric. 

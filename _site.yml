@@ -3,8 +3,13 @@ output_dir: "docs"
 navbar:
   title: "Travelling Salesman"
   left:
-    - text: "Home"
-      href: index.html
-    - text: "About"
-      href: about.html
+    - text: "Task 1"
+      href: task1.html
+    - text: "Task 2"
+      href: task2.html
+    - text: "Task 3"
+      href: task3.html
+    - text: "Analysis"
+      href: analysis.html 
+      
 

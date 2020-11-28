@@ -1,0 +1,10 @@
+---
+title: "Task1"
+---
+Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
+
+Task 1: Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.
+
+Content Follows below. Here is an attempt at R code output
+
+
