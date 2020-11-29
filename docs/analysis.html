@@ -19,6 +19,9 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -259,6 +262,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -266,6 +332,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -311,38 +387,71 @@ $(document).ready(function () {
 </div>
 
 
-<pre class="r"><code>indicatorPermissible &lt;- function(C,p,q){
-  if(p != 1 &amp;&amp; p!= 20 &amp;&amp; q!= 1 &amp;&amp; q!= 20){ #normal interchange
-    for(i in c(-1,1)){
-      if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
-        return(0)
-      }
+<div id="objectives" class="section level3">
+<h3>Objectives</h3>
+<p>A short description of the projects main problem is available on our <a href="index.html">home page</a>. We are tasked with writing a simulation that choose large n and m that we can sample the expected travel time of m-n+1 circuits which we are asked to show is approximately the true expected travel time of a circuit chosen uniformly <span class="math display">\[ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)\]</span>. Towards this goal we first labeled 20 cities numerically from 1:20</p>
+<pre class="r"><code>U &lt;-c(1:20) #vertices</code></pre>
+<p>In graph terminology these are our vertices and will make up the elements within our state space. Originally we had proceeded with the idea that we can sample from a generator matrix that would simulate all the Hamiltonian circuits but this would require non-existent computing power to generate a <span class="math inline">\(20!\)</span> by <span class="math inline">\(20!\)</span> matrix.</p>
+<p>Thus its best to consider the state space as a collection of all the valid circuits of which there are</p>
+<pre><code>## [1] 2.432902e+18</code></pre>
+<p>Thus the generator isn’t a matrix but instead a method which will choose two cities uniformly at random. Before writing the method, we first construct the edges as per the requirement. To this end we first constructed a <span class="math inline">\(20\)</span> by <span class="math inline">\(20\)</span> distance matrix D and populated it using a uniform(0,1) density.</p>
+</div>
+<div id="distance-matrix" class="section level3">
+<h3>Distance Matrix</h3>
+<pre class="r"><code>D &lt;- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix</code></pre>
+<p>We then manually specified 5 pairs (i,j) for which the entry in the distance matrix D would be zero implying travel restriction.We then transform D into a symmetric matrix by assigning the lower triangular of the matrix the entries of the upper triangular of the transpose of D.Finally we set the diagonal entries to zero as its assumed the distance from city i to i is 0. Thus as you can see there are 185 pairs with positive densities (19*20)/2 - 5 from the matrix or <span class="math inline">\({20 \choose 2}-5\)</span>.</p>
+<pre class="r"><code>D[4,6] = 0
+D[9,13]= 0
+D[1,19]= 0 
+D[10,17]= 0  
+D[3,8] = 0 #NO TRAVEL NO DISTANCE
+D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
+diag(D) &lt;- rep(0,20) #diagonals are 0</code></pre>
+<p>We note that the forbidden pairs must be entered in the form of D[i,j] where i&lt;j or else when we go to make the matrix symmetric the upper triangular entry is still most likely non-zero. This can be remedied by manually make all 10 entries 0, or letting j&lt;i and assigning the upper-triangular of D with the lower triangular of the transpose of D or in a proper application handling user input.</p>
+<p>Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our <span class="math inline">\(Q\)</span>. As mentioned above, the most prudent method as suggested was a method which picks two points uniformly at random and intechanges them. The code chunck below is the function that we desire.</p>
+<pre class="r"><code>tspMCMC &lt;- function(n,m){
+S &lt;- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
+rejection_counter &lt;- 0
+i &lt;- 1
+j &lt;- 1
+travel_time &lt;- rep(0, m-n+1)
+while(i &lt;= m){
+  P &lt;- sample(1:20,size=1) #basic sampling 
+  Q &lt;- sample(1:20,size=1) #likewise for proposed state, additionally Q &lt;- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
+  index_p = match(P, unlist(S[i])) #the position of P in the sequence
+  index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
+  k &lt;- unlist(S[i])
+  if(indicatorPermissible(k,index_p,index_q) == 1){
+    if(i &gt;= n){
+      travel_time[j] = distance_travelled(S[i])
+      j &lt;- j + 1
     }
+    S[i+1] &lt;- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
+    i &lt;- i + 1
+    #return(S[i+1])
   }
-  else{#case where interchange occurs at one or both of the endpoints of sequence
-    if(p == 1){
-      if(D[C[20],C[q]] == 0 || D[C[2],C[q]] == 0)
-        return(0)
-    }
-    else if(p == 20){
-      if(D[C[1],C[q]] == 0 || D[C[19],C[q]] == 0)
-        return(0)
-    }
-    else if(q==1){
-      if(D[C[20],C[p]] == 0 || D[C[2],C[p]] == 0)
-        return(0)
-    }
-    else{
-      if(D[C[1],C[p]] == 0 || D[C[19],C[p]] == 0)
-        return(0)
-    }
+  else{
+    rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
-  return(1)
+}
+   answer = mean(travel_time)*(m-n+1)/(m+1)
+   print(length(travel_time))
+   print(rejection_counter)
+   return(answer)
 }</code></pre>
-<p>This is code that checks if we need to reject an interchange.</p>
+<p>There is alot to unpack but very concisely it takes two arguments n(integer) and m(integer). It then samples two points, extracts their place in the sequence and pass it to along with the sequence to another function called <em>indicatorPermissable.</em> It’s the responsibility of the <em>indicatorPermissable</em> to return 0 if the proposed interchange creates a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns 1 we accept the new sequence and add it to the list of valid circuits that we have sampled.Furthermore if we have already sampled n <strong>valid</strong> circuits we also start computing the travel times by passing the sequence to a function called <em>distance_travelled</em>.</p>
+<p>One decision of importance that was taken was the use of a while loop instead of a for loop. This is done for multiple reasons one of which is that it gives up greater control of our simulation. It allows us to sample m unique circuits without repetitions. For example, if there is a proposed interchange that is rejected we don’t add it to the list of valid sequences we have sampled. This is done so that we don’t have to compute the travel time for a sequence multiple times in the case where we have rejected an interchange.</p>
+<p>Now let us test the algorithm using the same forbidden cities from above and a Uni(0,1) distributed distance matrix, additionally choose <span class="math inline">\(n=20,000\)</span> and <span class="math inline">\(m=40,000\)</span></p>
+<pre class="r"><code>tspMCMC(20000,40000)</code></pre>
+<pre><code>## Rejection Counter:  11862 
+## Average Return Time: 4.984244 seconds 
+## Computational Length: 1.651235 seconds</code></pre>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -375,6 +484,32 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

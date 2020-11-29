@@ -1,4 +1,4 @@
-U <-c(1:20) #state space
+U <-c(1:20) #vertices
 D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
 D[4,6] = 0
 D[9,13]= 0
@@ -9,6 +9,9 @@ D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
 
 indicatorPermissible <- function(C,p,q){
+  if(p == q){
+    return(0)
+  }
   if(p != 1 && p!= 20 && q!= 1 && q!= 20){ #normal interchange
     for(i in c(-1,1)){
       if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
@@ -36,7 +39,8 @@ indicatorPermissible <- function(C,p,q){
   }
   return(1)
 }
-return_time <- function(L){
+
+distance_travelled <- function(L){
   C <- unlist(L)
   f <- 0
   for(i in 1:19){
@@ -59,7 +63,7 @@ while(i <= m){
   k <- unlist(S[i])
   if(indicatorPermissible(k,index_p,index_q) == 1){
     if(i >= n){
-      travel_time[j] = return_time(S[i])
+      travel_time[j] = distance_travelled(S[i])
       j <- j + 1
     }
     S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
@@ -75,7 +79,6 @@ while(i <= m){
    print(rejection_counter)
    return(answer)
 }
-
 tspMCMC(100,200)
 tspMCMC(200,400)
 tspMCMC(400,800)

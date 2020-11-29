@@ -2,7 +2,7 @@
 title: "Travelling Salesman"
 ---
 
-```{r setup, include= FALSE}
+```{r include= FALSE}
 library(igraph)
 
 ```
