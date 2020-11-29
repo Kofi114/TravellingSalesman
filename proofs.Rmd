@@ -1,0 +1,20 @@
+---
+title: "Proofs"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
+
+## Task 1
+Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.
+
+## Task 2
+Write out a proof that that $P$ is irreducible, and that if $\mu$ isnt perfectly uniform then 
+P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a site where where a transition can occur]
+
+## Task 3
+Check that $Q$ is symmetric. 
+

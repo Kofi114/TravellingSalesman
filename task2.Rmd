@@ -1,5 +1,0 @@
----
-title: "Task2"
----
-Write out a proof that that $P$ is irreducible, and that if $\mu$ isnt perfectly uniform then 
-P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a site where where a transition can occur]

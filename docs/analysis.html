@@ -359,13 +359,7 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="task1.html">Task 1</a>
-</li>
-<li>
-  <a href="task2.html">Task 2</a>
-</li>
-<li>
-  <a href="task3.html">Task 3</a>
+  <a href="proofs.html">Proofs</a>
 </li>
 <li>
   <a href="analysis.html">Analysis</a>
@@ -408,6 +402,9 @@ D[3,8] = 0 #NO TRAVEL NO DISTANCE
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) &lt;- rep(0,20) #diagonals are 0</code></pre>
 <p>We note that the forbidden pairs must be entered in the form of D[i,j] where i&lt;j or else when we go to make the matrix symmetric the upper triangular entry is still most likely non-zero. This can be remedied by manually make all 10 entries 0, or letting j&lt;i and assigning the upper-triangular of D with the lower triangular of the transpose of D or in a proper application handling user input.</p>
+</div>
+<div id="algorithm" class="section level3">
+<h3>Algorithm</h3>
 <p>Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our <span class="math inline">\(Q\)</span>. As mentioned above, the most prudent method as suggested was a method which picks two points uniformly at random and intechanges them. The code chunck below is the function that we desire.</p>
 <pre class="r"><code>tspMCMC &lt;- function(n,m){
 S &lt;- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
@@ -441,11 +438,38 @@ while(i &lt;= m){
 }</code></pre>
 <p>There is alot to unpack but very concisely it takes two arguments n(integer) and m(integer). It then samples two points, extracts their place in the sequence and pass it to along with the sequence to another function called <em>indicatorPermissable.</em> It’s the responsibility of the <em>indicatorPermissable</em> to return 0 if the proposed interchange creates a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns 1 we accept the new sequence and add it to the list of valid circuits that we have sampled.Furthermore if we have already sampled n <strong>valid</strong> circuits we also start computing the travel times by passing the sequence to a function called <em>distance_travelled</em>.</p>
 <p>One decision of importance that was taken was the use of a while loop instead of a for loop. This is done for multiple reasons one of which is that it gives up greater control of our simulation. It allows us to sample m unique circuits without repetitions. For example, if there is a proposed interchange that is rejected we don’t add it to the list of valid sequences we have sampled. This is done so that we don’t have to compute the travel time for a sequence multiple times in the case where we have rejected an interchange.</p>
+</div>
+<div id="observations" class="section level3">
+<h3>Observations</h3>
 <p>Now let us test the algorithm using the same forbidden cities from above and a Uni(0,1) distributed distance matrix, additionally choose <span class="math inline">\(n=20,000\)</span> and <span class="math inline">\(m=40,000\)</span></p>
 <pre class="r"><code>tspMCMC(20000,40000)</code></pre>
-<pre><code>## Rejection Counter:  11862 
-## Average Return Time: 4.984244 seconds 
-## Computational Length: 1.651235 seconds</code></pre>
+<pre><code>## Rejection Counter:  11932 
+## Average Return Time: 4.832879 seconds 
+## Computational Length: 1.732029 seconds</code></pre>
+<p>Furthermore keeping the distance matrix fixed we can observe the results for multiple choices of n and m.</p>
+<pre class="r"><code>tspMCMC(20000,40000)
+tspMCMC(40000,80000)
+tspMCMC(80000,160000)
+tspMCMC(160000,320000)</code></pre>
+<pre><code>## tspMCM( 20000 , 40000 ) 
+## Rejection Counter:  12020 
+## Average Return Time: 5.210095 seconds</code></pre>
+<pre><code>## tspMCM( 40000 , 80000 ) 
+## Rejection Counter:  24075 
+## Average Return Time: 5.205957 seconds</code></pre>
+<pre><code>## tspMCM( 80000 , 160000 ) 
+## Rejection Counter:  48785 
+## Average Return Time: 5.210648 seconds</code></pre>
+<pre><code>## tspMCM( 160000 , 320000 ) 
+## Rejection Counter:  97169 
+## Average Return Time: 5.20763 seconds</code></pre>
+<pre><code>## tspMCM( 1e+06 , 2e+06 ) 
+## Rejection Counter:  607254 
+## Average Return Time: 5.21331 seconds</code></pre>
+<pre><code>## Computational Length: 1.991985 minutes</code></pre>
+</div>
+<div id="appendix" class="section level3">
+<h3>Appendix</h3>
 </div>
 
 

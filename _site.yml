@@ -4,12 +4,8 @@ navbar:
   title: Travelling Salesman
   href: index.html
   left:
-    - text: "Task 1"
-      href: task1.html
-    - text: "Task 2"
-      href: task2.html
-    - text: "Task 3"
-      href: task3.html
+    - text: "Proofs"
+      href: proofs.html
     - text: "Analysis"
       href: analysis.html 
       

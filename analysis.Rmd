@@ -42,6 +42,8 @@ diag(D) <- rep(0,20) #diagonals are 0
 ```
 We note that the forbidden pairs must be entered in the form of D[i,j] where i<j or else when we go to make the matrix symmetric the upper triangular entry is still most likely non-zero. This can be remedied by manually make all 10 entries 0, or letting j<i and assigning the upper-triangular of D with the lower triangular of the transpose of D or in a proper application handling user input.
 
+### Algorithm 
+
 Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. As mentioned above, the most prudent method as suggested was a method which picks two points uniformly at random and intechanges them. The code chunck below is the function that we desire.
 ```{r}
 tspMCMC <- function(n,m){
@@ -80,6 +82,7 @@ There is alot to unpack but very concisely it takes two arguments n(integer) and
 
 One decision of importance that was taken was the use of a while loop instead of a for loop. This is done for multiple reasons one of which is that it gives up greater control of our simulation. It allows us to sample m unique circuits without repetitions. For example, if there is a proposed interchange that is rejected we don't add it to the list of valid sequences we have sampled. This is done so that we don't have to compute the travel time for a sequence multiple times in the case where we have rejected an interchange. 
 
+### Observations
 Now let us test the algorithm using the same forbidden cities from above and a Uni(0,1) distributed distance matrix, additionally choose $n=20,000$ and $m=40,000$ 
 ```{r eval=FALSE}
 tspMCMC(20000,40000)
@@ -165,6 +168,7 @@ while(i <= m){
   }
 }
    answer = mean(travel_time)*(m-n+1)/(m+1)
+   
    cat("Rejection Counter: ", rejection_counter, "\n")
    cat("Average Return Time:", answer, "seconds" , "\n")
    cat("Computational Length:", Sys.time()-start, "seconds", "\n")
@@ -172,6 +176,105 @@ while(i <= m){
 }
 tspMCMC(20000,40000)
 ```
+Furthermore keeping the distance matrix fixed we can observe the results for multiple choices of n and m.
+```{r eval=FALSE}
+tspMCMC(20000,40000)
+tspMCMC(40000,80000)
+tspMCMC(80000,160000)
+tspMCMC(160000,320000)
+```
 
+```{r echo=FALSE}
+U <-c(1:20) #vertices
+D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
+D[4,6] = 0
+D[9,13]= 0
+D[1,19]= 0 
+D[10,17]= 0  
+D[3,8] = 0 #NO TRAVEL NO DISTANCE
+D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
+diag(D) <- rep(0,20) #diagonals are 0
 
+indicatorPermissible <- function(C,p,q){
+  if(p == q){
+    return(0)
+  }
+  if(p != 1 && p!= 20 && q!= 1 && q!= 20){ #normal interchange
+    for(i in c(-1,1)){
+      if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
+        return(0)
+      }
+    }
+  }
+  else{#case where interchange occurs at one or both of the endpoints of sequence
+    if(p == 1){
+      if(D[C[20],C[q]] == 0 || D[C[2],C[q]] == 0)
+        return(0)
+    }
+    else if(p == 20){
+      if(D[C[1],C[q]] == 0 || D[C[19],C[q]] == 0)
+        return(0)
+    }
+    else if(q==1){
+      if(D[C[20],C[p]] == 0 || D[C[2],C[p]] == 0)
+        return(0)
+    }
+    else{
+      if(D[C[1],C[p]] == 0 || D[C[19],C[p]] == 0)
+        return(0)
+    }
+  }
+  return(1)
+}
 
+distance_travelled <- function(L){
+  C <- unlist(L)
+  f <- 0
+  for(i in 1:19){
+    f = f + D[C[i],C[i+1]]  
+  }
+  return(f<- f + D[C[20],C[1]])
+}
+
+tspMCMC <- function(n,m){
+start <- Sys.time()
+S <- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
+rejection_counter <- 0
+i <- 1
+j <- 1
+travel_time <- rep(0, m-n+1)
+while(i <= m){
+  P <- sample(1:20,size=1) #basic sampling 
+  Q <- sample(1:20,size=1) #likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
+  index_p = match(P, unlist(S[i])) #the position of P in the sequence
+  index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
+  k <- unlist(S[i])
+  if(indicatorPermissible(k,index_p,index_q) == 1){
+    if(i >= n){
+      travel_time[j] = distance_travelled(S[i])
+      j <- j + 1
+    }
+    S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
+    i <- i + 1
+    #return(S[i+1])
+  }
+  else{
+    rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
+  }
+}
+   answer = mean(travel_time)*(m-n+1)/(m+1)
+   cat("tspMCM(",n,",",m,")", "\n")
+   cat("Rejection Counter: ", rejection_counter, "\n")
+   cat("Average Return Time:", answer, "seconds" , "\n")
+   # return(answer)
+}
+start <- Sys.time()
+tspMCMC(20000,40000)
+tspMCMC(40000,80000)
+tspMCMC(80000,160000)
+tspMCMC(160000,320000)
+tspMCMC(1000000,2000000)
+cat("Computational Length:", Sys.time()-start, "minutes", "\n")
+```
+
+### Appendix 
