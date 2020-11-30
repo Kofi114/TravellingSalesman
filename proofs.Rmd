@@ -10,6 +10,75 @@ Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
 
 ## Task 1
 Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.
+For $P$ to be irreducible with respect to $\mu$, we must show that:
+
+\[\mu_i p_{ij}=\mu_j p_{ji} \hspace{.5cm} \forall \hspace{.1cm} i,j\]
+
+Recall that $Q$ is symmetric (i.e $q_{ij}=q_{ji}$), as this is key to the reversibility of $P$.
+
+Now, given by the definition of $P$, we have that:
+
+\[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})\]
+
+and we also have that: 
+
+\[p_{ji}=q_{ji}min(1,\frac{\mu_i}{\mu_j})=q_{ij}min(1,\frac{\mu_i}{\mu_j})\]
+
+From here, we can deal with different cases for the $\mu$'s, taking into account that we know $\mu_k$ is strictly positive for all $k$, and thus their ratios are strictly positive as well. We will show, that in all cases, reversibility holds true. 
+
+\begin{itemize}
+    \item CASE 1: $\mu_i<\mu_j$
+    
+    Notice that this implies that $\frac{\mu_i}{\mu_j}<1$ and $\frac{\mu_j}{\mu_i}>1$
+    
+    Therefore, we can conclude that
+    
+    \[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\cdot 1=q_{ij}\]
+    
+    and 
+    
+    \[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\frac{\mu_i}{\mu_j}\]
+    
+    Let us plug these values of $p_ij$ and $p_ji$ into the reversibility equality to see if it holds.
+
+    \[\mu_i q_{ij}=\mu_j q_{ij}\frac{\mu_i}{\mu_j}\]
+    
+    which simplifies to:
+    
+    \[\mu_i q_{ij}=\mu_i q_{ij}\]
+    
+    The equality holds true, and thus the condition for reversibility of $P$ is satisfied.
+    
+    
+    \item CASE 2 $\mu_i\geq\mu_j$
+    
+    This case is analogous to that of the first.
+    
+    Notice that this implies that $\frac{\mu_i}{\mu_j}\geq 1$ and $\frac{\mu_j}{\mu_i}\leq 1$
+
+    Therefore, we can conclude that
+    
+    \[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\frac{\mu_j}{\mu_i}\]
+    
+    and 
+    
+    \[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\cdot 1=q_{ij}\]
+    
+    As we did before, let us plug these values of $p_ij$ and $p_ji$ into the reversibility equality to see if it holds.
+
+    \[\mu_i q_{ij}\frac{\mu_j}{\mu_i}=\mu_j q_{ij}\]
+    
+    which simplifies to:
+    
+    \[\mu_j q_{ij}=\mu_j q_{ij}\]
+    
+    The equality holds true, and thus the condition for reversibility of $P$ is satisfied.
+    
+    
+\end{itemize}
+
+   As this proof is for any arbitrary states $i$ and $j$ in $P$, we can conclude that $P$ is indeed reversible with respect to $\mu$.
+
 
 ## Task 2
 Write out a proof that that $P$ is irreducible, and that if $\mu$ isnt perfectly uniform then 
