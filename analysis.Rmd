@@ -1,9 +1,6 @@
 ---
 title: "Analysis"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '3'
   html_document:
     toc: yes
     toc_float: yes
@@ -275,9 +272,12 @@ start <- Sys.time()
 tspMCMC(20000,40000)
 tspMCMC(40000,80000)
 tspMCMC(80000,160000)
-tspMCMC(160000,320000)
-tspMCMC(1000000,2000000)
+# tspMCMC(160000,320000)
+# tspMCMC(1000000,2000000)
 cat("Computational Length:", Sys.time()-start, "minutes", "\n")
 ```
 
 ### Appendix 
+
+<a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R"> Code </a>
+<!-- The following R.file contains our <a href="circuit.R" download> code </a> -->

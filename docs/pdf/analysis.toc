@@ -1,0 +1,5 @@
+\contentsline {subsubsection}{Objectives}{1}{section*.2}%
+\contentsline {subsubsection}{Distance Matrix}{1}{section*.3}%
+\contentsline {subsubsection}{Algorithm}{2}{section*.4}%
+\contentsline {subsubsection}{Observations}{3}{section*.5}%
+\contentsline {subsubsection}{Appendix}{3}{section*.6}%

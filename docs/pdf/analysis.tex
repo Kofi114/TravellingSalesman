@@ -1,0 +1,320 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analysis},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Analysis}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\hypertarget{objectives}{%
+\subsubsection{Objectives}\label{objectives}}
+
+A short description of the projects main problem is available on our
+\href{index.html}{home page}. We are tasked with writing a simulation
+that choose large n and m that we can sample the expected travel time of
+m-n+1 circuits which we are asked to show is approximately the true
+expected travel time of a circuit chosen uniformly
+\[ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)\].
+Towards this goal we first labeled 20 cities numerically from 1:20
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{U <-}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{) }\CommentTok{#vertices}
+\end{Highlighting}
+\end{Shaded}
+
+In graph terminology these are our vertices and will make up the
+elements within our state space. Originally we had proceeded with the
+idea that we can sample from a generator matrix that would simulate all
+the Hamiltonian circuits but this would require non-existent computing
+power to generate a \(20!\) by \(20!\) matrix.
+
+Thus its best to consider the state space as a collection of all the
+valid circuits of which there are
+
+\begin{verbatim}
+## [1] 2.432902e+18
+\end{verbatim}
+
+Thus the generator isn't a matrix but instead a method which will choose
+two cities uniformly at random. Before writing the method, we first
+construct the edges as per the requirement. To this end we first
+constructed a \(20\) by \(20\) distance matrix D and populated it using
+a uniform(0,1) density.
+
+\hypertarget{distance-matrix}{%
+\subsubsection{Distance Matrix}\label{distance-matrix}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{D <-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\KeywordTok{runif}\NormalTok{(}\DataTypeTok{n=}\DecValTok{20}\OperatorTok{*}\DecValTok{20}\NormalTok{, }\DataTypeTok{min=}\DecValTok{0}\NormalTok{, }\DataTypeTok{max =}\DecValTok{1}\NormalTok{), }\DataTypeTok{ncol =} \DecValTok{20}\NormalTok{) }\CommentTok{#uniformly distributed distance matrix}
+\end{Highlighting}
+\end{Shaded}
+
+We then manually specified 5 pairs (i,j) for which the entry in the
+distance matrix D would be zero implying travel restriction.We then
+transform D into a symmetric matrix by assigning the lower triangular of
+the matrix the entries of the upper triangular of the transpose of
+D.Finally we set the diagonal entries to zero as its assumed the
+distance from city i to i is 0. Thus as you can see there are 185 pairs
+with positive densities (19*20)/2 - 5 from the matrix or
+\({20 \choose 2}-5\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{D[}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{] =}\StringTok{ }\DecValTok{0}
+\NormalTok{D[}\DecValTok{9}\NormalTok{,}\DecValTok{13}\NormalTok{]=}\StringTok{ }\DecValTok{0}
+\NormalTok{D[}\DecValTok{1}\NormalTok{,}\DecValTok{19}\NormalTok{]=}\StringTok{ }\DecValTok{0} 
+\NormalTok{D[}\DecValTok{10}\NormalTok{,}\DecValTok{17}\NormalTok{]=}\StringTok{ }\DecValTok{0}  
+\NormalTok{D[}\DecValTok{3}\NormalTok{,}\DecValTok{8}\NormalTok{] =}\StringTok{ }\DecValTok{0} \CommentTok{#NO TRAVEL NO DISTANCE}
+\NormalTok{D[}\KeywordTok{lower.tri}\NormalTok{(D)] =}\StringTok{ }\KeywordTok{t}\NormalTok{(D)[}\KeywordTok{lower.tri}\NormalTok{(D)] }\CommentTok{#symmetric matrix}
+\KeywordTok{diag}\NormalTok{(D) <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{20}\NormalTok{) }\CommentTok{#diagonals are 0}
+\end{Highlighting}
+\end{Shaded}
+
+We note that the forbidden pairs must be entered in the form of
+D{[}i,j{]} where i\textless j or else when we go to make the matrix
+symmetric the upper triangular entry is still most likely non-zero. This
+can be remedied by manually make all 10 entries 0, or letting
+j\textless i and assigning the upper-triangular of D with the lower
+triangular of the transpose of D or in a proper application handling
+user input.
+
+\hypertarget{algorithm}{%
+\subsubsection{Algorithm}\label{algorithm}}
+
+Thus with the vertices set up and the weighted-edges specified, we have
+initialized our graph. We can now consider our \(Q\). As mentioned
+above, the most prudent method as suggested was a method which picks two
+points uniformly at random and intechanges them. The code chunck below
+is the function that we desire.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tspMCMC <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n,m)\{}
+\NormalTok{S <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{)) }\CommentTok{#preferably this sequence will be randomly generated and a proper circuit.}
+\NormalTok{rejection_counter <-}\StringTok{ }\DecValTok{0}
+\NormalTok{i <-}\StringTok{ }\DecValTok{1}
+\NormalTok{j <-}\StringTok{ }\DecValTok{1}
+\NormalTok{travel_time <-}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, m}\OperatorTok{-}\NormalTok{n}\OperatorTok{+}\DecValTok{1}\NormalTok{)}
+\ControlFlowTok{while}\NormalTok{(i }\OperatorTok{<=}\StringTok{ }\NormalTok{m)\{}
+\NormalTok{  P <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{,}\DataTypeTok{size=}\DecValTok{1}\NormalTok{) }\CommentTok{#basic sampling }
+\NormalTok{  Q <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{20}\NormalTok{,}\DataTypeTok{size=}\DecValTok{1}\NormalTok{) }\CommentTok{#likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable}
+\NormalTok{  index_p =}\StringTok{ }\KeywordTok{match}\NormalTok{(P, }\KeywordTok{unlist}\NormalTok{(S[i])) }\CommentTok{#the position of P in the sequence}
+\NormalTok{  index_q =}\StringTok{ }\KeywordTok{match}\NormalTok{(Q, }\KeywordTok{unlist}\NormalTok{(S[i])) }\CommentTok{#likewise for the second element in the pair}
+\NormalTok{  k <-}\StringTok{ }\KeywordTok{unlist}\NormalTok{(S[i])}
+  \ControlFlowTok{if}\NormalTok{(}\KeywordTok{indicatorPermissible}\NormalTok{(k,index_p,index_q) }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{)\{}
+    \ControlFlowTok{if}\NormalTok{(i }\OperatorTok{>=}\StringTok{ }\NormalTok{n)\{}
+\NormalTok{      travel_time[j] =}\StringTok{ }\KeywordTok{distance_travelled}\NormalTok{(S[i])}
+\NormalTok{      j <-}\StringTok{ }\NormalTok{j }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+\NormalTok{    \}}
+\NormalTok{    S[i}\OperatorTok{+}\DecValTok{1}\NormalTok{] <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{replace}\NormalTok{(k, }\KeywordTok{c}\NormalTok{(index_p,index_q), }\KeywordTok{c}\NormalTok{(Q,P)))) }\CommentTok{#adds a new sequence to S interchanging P and Q }
+\NormalTok{    i <-}\StringTok{ }\NormalTok{i }\OperatorTok{+}\StringTok{ }\DecValTok{1}
+    \CommentTok{#return(S[i+1])}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+\NormalTok{    rejection_counter =}\StringTok{ }\NormalTok{rejection_counter}\OperatorTok{+}\DecValTok{1} \CommentTok{#see how many time our proposed transition introduced forbidden travel}
+\NormalTok{  \}}
+\NormalTok{\}}
+\NormalTok{   answer =}\StringTok{ }\KeywordTok{mean}\NormalTok{(travel_time)}\OperatorTok{*}\NormalTok{(m}\OperatorTok{-}\NormalTok{n}\OperatorTok{+}\DecValTok{1}\NormalTok{)}\OperatorTok{/}\NormalTok{(m}\OperatorTok{+}\DecValTok{1}\NormalTok{)}
+   \KeywordTok{print}\NormalTok{(}\KeywordTok{length}\NormalTok{(travel_time))}
+   \KeywordTok{print}\NormalTok{(rejection_counter)}
+   \KeywordTok{return}\NormalTok{(answer)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+There is alot to unpack but very concisely it takes two arguments
+n(integer) and m(integer). It then samples two points, extracts their
+place in the sequence and pass it to along with the sequence to another
+function called \emph{indicatorPermissable.} It's the responsibility of
+the \emph{indicatorPermissable} to return 0 if the proposed interchange
+creates a sequence where travel between two forbidden cities is
+introduced. In the case where the indicator returns 1 we accept the new
+sequence and add it to the list of valid circuits that we have
+sampled.Furthermore if we have already sampled n \textbf{valid} circuits
+we also start computing the travel times by passing the sequence to a
+function called \emph{distance\_travelled}.
+
+One decision of importance that was taken was the use of a while loop
+instead of a for loop. This is done for multiple reasons one of which is
+that it gives up greater control of our simulation. It allows us to
+sample m unique circuits without repetitions. For example, if there is a
+proposed interchange that is rejected we don't add it to the list of
+valid sequences we have sampled. This is done so that we don't have to
+compute the travel time for a sequence multiple times in the case where
+we have rejected an interchange.
+
+\hypertarget{observations}{%
+\subsubsection{Observations}\label{observations}}
+
+Now let us test the algorithm using the same forbidden cities from above
+and a Uni(0,1) distributed distance matrix, additionally choose
+\(n=20,000\) and \(m=40,000\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tspMCMC}\NormalTok{(}\DecValTok{20000}\NormalTok{,}\DecValTok{40000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rejection Counter:  12033 
+## Average Return Time: 5.135202 seconds 
+## Computational Length: 2.0703 seconds
+\end{verbatim}
+
+Furthermore keeping the distance matrix fixed we can observe the results
+for multiple choices of n and m.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{tspMCMC}\NormalTok{(}\DecValTok{20000}\NormalTok{,}\DecValTok{40000}\NormalTok{)}
+\KeywordTok{tspMCMC}\NormalTok{(}\DecValTok{40000}\NormalTok{,}\DecValTok{80000}\NormalTok{)}
+\KeywordTok{tspMCMC}\NormalTok{(}\DecValTok{80000}\NormalTok{,}\DecValTok{160000}\NormalTok{)}
+\KeywordTok{tspMCMC}\NormalTok{(}\DecValTok{160000}\NormalTok{,}\DecValTok{320000}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## tspMCM( 20000 , 40000 ) 
+## Rejection Counter:  11994 
+## Average Return Time: 4.727875 seconds
+\end{verbatim}
+
+\begin{verbatim}
+## tspMCM( 40000 , 80000 ) 
+## Rejection Counter:  24100 
+## Average Return Time: 4.716286 seconds
+\end{verbatim}
+
+\begin{verbatim}
+## tspMCM( 80000 , 160000 ) 
+## Rejection Counter:  48129 
+## Average Return Time: 4.712535 seconds
+\end{verbatim}
+
+\begin{verbatim}
+## tspMCM( 160000 , 320000 ) 
+## Rejection Counter:  97288 
+## Average Return Time: 4.709745 seconds
+\end{verbatim}
+
+\begin{verbatim}
+## tspMCM( 1e+06 , 2e+06 ) 
+## Rejection Counter:  604861 
+## Average Return Time: 4.711487 seconds
+\end{verbatim}
+
+\begin{verbatim}
+## Computational Length: 2.792831 minutes
+\end{verbatim}
+
+\hypertarget{appendix}{%
+\subsubsection{Appendix}\label{appendix}}
+
+\end{document}
