@@ -382,8 +382,8 @@ div.tocify {
 
 
 <p>Where <span class="math inline">\(p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}\)</span></p>
-<div id="task-1" class="section level2">
-<h2>Task 1</h2>
+<div id="task-1--reversibility-of-mu" class="section level2">
+<h2>Task 1- Reversibility of <span class="math inline">\(\mu\)</span></h2>
 <p>Write out a proof that P is reversible with respect to <span class="math inline">\(\mu\)</span>. Conclude that <span class="math inline">\(\mu\)</span> is an invariant probability distribution for P. For <span class="math inline">\(P\)</span> to be irreducible with respect to <span class="math inline">\(\mu\)</span>, we must show that:</p>
 <p><span class="math display">\[\mu_i p_{ij}=\mu_j p_{ji} \hspace{.5cm} \forall \hspace{.1cm} i,j\]</span></p>
 <p>Recall that <span class="math inline">\(Q\)</span> is symmetric (i.e <span class="math inline">\(q_{ij}=q_{ji}\)</span>), as this is key to the reversibility of <span class="math inline">\(P\)</span>.</p>
@@ -392,20 +392,24 @@ div.tocify {
 <p>and we also have that:</p>
 <p><span class="math display">\[p_{ji}=q_{ji}min(1,\frac{\mu_i}{\mu_j})=q_{ij}min(1,\frac{\mu_i}{\mu_j})\]</span></p>
 <p>From here, we can deal with different cases for the <span class="math inline">\(\mu\)</span>’s, taking into account that we know <span class="math inline">\(\mu_k\)</span> is strictly positive for all <span class="math inline">\(k\)</span>, and thus their ratios are strictly positive as well. We will show, that in all cases, reversibility holds true.</p>
-<p>CASE 1: <span class="math inline">\(\mu_i&lt;\mu_j\)</span></p>
-<p>Notice that this implies that <span class="math inline">\(\frac{\mu_i}{\mu_j}&lt;1\)</span> and <span class="math inline">\(\frac{\mu_j}{\mu_i}&gt;1\)</span> Therefore, we can conclude that <span class="math display">\[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\cdot 1=q_{ij}\]</span> and <span class="math display">\[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\frac{\mu_i}{\mu_j}\]</span> Let us plug these values of <span class="math inline">\(p_ij\)</span> and <span class="math inline">\(p_ji\)</span> into the reversibility equality to see if it holds. <span class="math display">\[\mu_i q_{ij}=\mu_j q_{ij}\frac{\mu_i}{\mu_j}\]</span> which simplifies to: <span class="math display">\[\mu_i q_{ij}=\mu_i q_{ij}\]</span> The equality holds true, and thus the condition for reversibility of <span class="math inline">\(P\)</span> is satisfied.</p>
-<p>CASE 2: <span class="math inline">\(\mu_i\geq\mu_j\)</span></p>
+<div id="case-1-mu_imu_j" class="section level3">
+<h3>CASE 1: <span class="math inline">\(\mu_i&lt;\mu_j\)</span></h3>
+<p>Notice that this implies that <span class="math inline">\(\frac{\mu_i}{\mu_j}&lt;1\)</span> and <span class="math inline">\(\frac{\mu_j}{\mu_i}&gt;1\)</span> Therefore, we can conclude that <span class="math display">\[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\cdot 1=q_{ij}\]</span> and <span class="math display">\[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\frac{\mu_i}{\mu_j}\]</span> Let us plug these values of <span class="math inline">\(p_{ij}\)</span> and <span class="math inline">\(p_{ji}\)</span> into the reversibility equality to see if it holds. <span class="math display">\[\mu_i q_{ij}=\mu_j q_{ij}\frac{\mu_i}{\mu_j}\]</span> which simplifies to: <span class="math display">\[\mu_i q_{ij}=\mu_i q_{ij}\]</span> The equality holds true, and thus the condition for reversibility of <span class="math inline">\(P\)</span> is satisfied.</p>
+</div>
+<div id="case-2-mu_igeqmu_j" class="section level3">
+<h3>CASE 2: <span class="math inline">\(\mu_i\geq\mu_j\)</span></h3>
 <p>This case is analogous to that of the first. Notice that this implies that <span class="math inline">\(\frac{\mu_i}{\mu_j}\geq 1\)</span> and <span class="math inline">\(\frac{\mu_j}{\mu_i}\leq 1\)</span></p>
-<p>Therefore, we can conclude that <span class="math display">\[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\frac{\mu_j}{\mu_i}\]</span> and <span class="math display">\[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\cdot 1=q_{ij}\]</span> As we did before, let us plug these values of <span class="math inline">\(p_ij\)</span> and <span class="math inline">\(p_ji\)</span> into the reversibility equality to see if it holds. <span class="math display">\[\mu_i q_{ij}\frac{\mu_j}{\mu_i}=\mu_j q_{ij}\]</span> which simplifies to: <span class="math display">\[\mu_j q_{ij}=\mu_j q_{ij}\]</span></p>
+<p>Therefore, we can conclude that <span class="math display">\[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\frac{\mu_j}{\mu_i}\]</span> and <span class="math display">\[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\cdot 1=q_{ij}\]</span> As we did before, let us plug these values of <span class="math inline">\(p_{ij}\)</span> and <span class="math inline">\(p_{ji}\)</span> into the reversibility equality to see if it holds. <span class="math display">\[\mu_i q_{ij}\frac{\mu_j}{\mu_i}=\mu_j q_{ij}\]</span> which simplifies to: <span class="math display">\[\mu_j q_{ij}=\mu_j q_{ij}\]</span></p>
 <p>The equality holds true, and thus the condition for reversibility of <span class="math inline">\(P\)</span> is satisfied.</p>
 <p>As this proof is for any arbitrary states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in <span class="math inline">\(P\)</span>, we can conclude that <span class="math inline">\(P\)</span> is indeed reversible with respect to <span class="math inline">\(\mu\)</span>.</p>
 </div>
-<div id="task-2" class="section level2">
-<h2>Task 2</h2>
+</div>
+<div id="task-2---irreduciblity-aperiodicity" class="section level2">
+<h2>Task 2 - Irreduciblity &amp; Aperiodicity</h2>
 <p>Write out a proof that that <span class="math inline">\(P\)</span> is irreducible, and that if <span class="math inline">\(\mu\)</span> isnt perfectly uniform then P is aperiodic. [Hint: Show that if <span class="math inline">\(i \to j\)</span> under <span class="math inline">\(Q\)</span> then <span class="math inline">\(i \to j\)</span> under <span class="math inline">\(P\)</span>. For aperidocity, consider a site where where a transition can occur]</p>
 </div>
-<div id="task-3" class="section level2">
-<h2>Task 3</h2>
+<div id="task-3---symmetry-of-q" class="section level2">
+<h2>Task 3 - Symmetry of Q</h2>
 <p>Check that <span class="math inline">\(Q\)</span> is symmetric.</p>
 </div>
 
