@@ -8,34 +8,13 @@ D[3,8] = 0 #NO TRAVEL NO DISTANCE
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
 
-indicatorPermissible <- function(C,p,q){
-  if(p == q){
+indicatorPermissible <- function(z){
+  if(D[z[1],z[20]] == 0){
     return(0)
   }
-  if(p != 1 && p!= 20 && q!= 1 && q!= 20){ #normal interchange
-    for(i in c(-1,1)){
-      if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
-        return(0)
-      }
-    }
-  }
-  else{#case where interchange occurs at one or both of the endpoints of sequence
-    if(p == 1){
-      if(D[C[20],C[q]] == 0 || D[C[2],C[q]] == 0)
-        return(0)
-    }
-    else if(p == 20){
-      if(D[C[1],C[q]] == 0 || D[C[19],C[q]] == 0)
-        return(0)
-    }
-    else if(q==1){
-      if(D[C[20],C[p]] == 0 || D[C[2],C[p]] == 0)
-        return(0)
-    }
-    else{
-      if(D[C[1],C[p]] == 0 || D[C[19],C[p]] == 0)
-        return(0)
-    }
+  for(i in 1:19){
+    if(D[z[i],z[i+1]] == 0)
+      return(0)
   }
   return(1)
 }
@@ -54,31 +33,33 @@ S <- list(c(1:20)) #preferably this sequence will be randomly generated and a pr
 rejection_counter <- 0
 i <- 1
 j <- 1
-travel_time <- rep(0, m-n+1)
-while(i <= m){
+travel_time <- rep(0, m+1)
+while(i <= m+n){
   P <- sample(1:20,size=1) #basic sampling 
-  Q <- sample(1:20,size=1) #likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
+  Q <- sample(1:20,size=1) #likewise for proposed state, 
   index_p = match(P, unlist(S[i])) #the position of P in the sequence
   index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
   k <- unlist(S[i])
-  if(indicatorPermissible(k,index_p,index_q) == 1){
+  z <- c(replace(k, c(index_p,index_q), c(Q,P)))
+  if(indicatorPermissible(z) == 1){
     if(i >= n){
       travel_time[j] = distance_travelled(S[i])
       j <- j + 1
     }
-    S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
+    S[i+1] <- list(z) #adds the new sequence to S interchanging P and Q 
     i <- i + 1
-    #return(S[i+1])
   }
   else{
     rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
 }
-   answer = mean(travel_time)*(m-n+1)/(m+1)
+   answer = mean(travel_time)
    print(length(travel_time))
    print(rejection_counter)
    return(answer)
 }
+start <- Sys.time()
+tspMCMC(5,10)
 tspMCMC(100,200)
 tspMCMC(200,400)
 tspMCMC(400,800)
@@ -87,4 +68,5 @@ tspMCMC(1600,3200)
 tspMCMC(3200,6400)
 tspMCMC(20000,40000)
 tspMCMC(80000,160000)
-#tspMCMC(300000,600000)
+# tspMCMC(2000000,4000000)
+Sys.time()-start

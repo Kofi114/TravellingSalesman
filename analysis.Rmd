@@ -1,9 +1,12 @@
 ---
 title: "Analysis"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
   html_document:
-    toc: true
-    toc_float: true
+    toc: yes
+    toc_float: yes
     toc_depth: 3
 ---
 ### Objectives
