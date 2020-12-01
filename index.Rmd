@@ -1,5 +1,10 @@
 ---
 title: "Travelling Salesman"
+output: 
+  html_document:
+    theme: readable
+includes:
+      after_body: footer.html
 ---
 
 ```{r include= FALSE}

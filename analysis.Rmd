@@ -3,8 +3,11 @@ title: "Analysis"
 output:
   html_document:
     toc: yes
-    toc_float: yes
+    toc_float: true
     toc_depth: 3
+    theme: readable
+    includes:
+      after_body: footer.html
 ---
 ### Objectives
 A short description of the projects main problem is available on our [home page](index.html). We are
@@ -279,5 +282,7 @@ cat("Computational Length:", Sys.time()-start, "minutes", "\n")
 
 ### Appendix 
 
-<a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R"> Code </a>
-<!-- The following R.file contains our <a href="circuit.R" download> code </a> -->
+<a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R" download> Code </a>
+
+<!-- The following R file contains our <a href="/task4/circuit.R" download> code </a> -->
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>

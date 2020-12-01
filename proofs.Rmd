@@ -7,11 +7,17 @@ output:
     toc_depth: 3
     collapsed: true
     smooth_scroll: true
+    theme: readable
+    includes:
+      after_body: footer.html
 ---
 Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
 
 ## Task 1- Reversibility of $\mu$
-Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.
+*Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.*
+<br><br>
+$\underline{Solution}:$
+<br>
 For $P$ to be irreducible with respect to $\mu$, we must show that:
 
 \[\mu_i p_{ij}=\mu_j p_{ji} \hspace{.5cm} \forall \hspace{.1cm} i,j\]
@@ -60,9 +66,13 @@ As this proof is for any arbitrary states $i$ and $j$ in $P$, we can conclude th
 
 
 ## Task 2 - Irreduciblity & Aperiodicity 
-Write out a proof that that $P$ is irreducible, and that if $\mu$ isnt perfectly uniform then 
-P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a site where where a transition can occur]
+
+*Write out a proof that that $P$ is irreducible, and that if $\mu$ isn't perfectly uniform then* 
+*P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a* *site where where a transition can occur]*
+
 
 ## Task 3 - Symmetry of Q
-Check that $Q$ is symmetric. 
+*Check that $Q$ is symmetric.*
+<br>
 
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
