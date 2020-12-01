@@ -70,6 +70,94 @@ As this proof is for any arbitrary states $i$ and $j$ in $P$, we can conclude th
 *Write out a proof that that $P$ is irreducible, and that if $\mu$ isn't perfectly uniform then* 
 *P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a* *site where where a transition can occur]*
 
+$Q$ IS IRREDUCIBLE:
+
+As established in Task 1, as all the elements of $\mu$ are strictly positive, the ratios $\frac{\mu_i}{\mu_j}$ for any $i$ and $j$ can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:
+
+\[min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]
+
+for all $i$ and $j$.
+
+
+
+
+
+Now, recall that $P$ being reducible means have a return probability $f_{ij}>0$ for all states $i$ and $j$, where:
+
+\[f_{ij}=p_{ij}+\sum_{k\neq j}p_{ik}f_{kj}\]
+
+In words, we have that we can go directly go from $i$ to $j$ (i.e $p_{ij}>0$), or we can reach $j$ from $i$ via other states ($p_{ia}\cdot p_{ab}\cdot p_{bc}\cdot p_{cj}>0$, where each $p$ is strictly positive), or possibly both. Now, we already know this holds true for $Q$, as it is irreducible. 
+
+
+Now, let the minimum of 1 and the ratio of the $\mu$'s for each transition from states $i$ to $j$ be $r_{ij}$:
+
+\[r_{ij}=min(1,\frac{\mu_i}{\mu_j})\in(0,1]\] 
+
+$Q$ being irreducible implies at least one of the following two for any two states $i$ and $j$.
+
+
+Case 1: We can transition directly: $q_{ij}>0$
+    
+    In this case, notice that $p_{ij}=q_{ij}\cdot r_{ij}$. And as we established $r_{ij}>0$, we can conclude that $p_{ij}>0$. Notice that this implies that $f_{ij}>0$
+    
+Case 2: We reach $j$ from $i$ indirectly: $i\to a_1 \to a_2 \to ... \to a_n \to j$
+    
+    In this case, we clearly have that $q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}>0$
+    
+    Recall that as all our $\mu$ ratios are strictly positive, we can claim that:
+    
+    
+    \[r_{ia_{1}}q_{ia_{1}}\cdot r_{a_{1}a_{2}}q_{a_{1}a_{2}}\cdot ...\cdot r_{a_{n-1}a_{n}}q_{a_{n-1}a_{n}}\cdot r_{a_{n}j}q_{a_{n}j}>0\]
+    
+    Notice that this just another way of expressing:
+    
+    \[p_{ia_{1}}\cdot p_{a_{1}a_{2}}\cdot ...\cdot p_{a_{n-1}a_{n}}\cdot p_{a_{n}j}>0\]
+    
+    Which implies that $f_{ij}>0$.
+    
+
+
+Needless to say, there is a the third case where $i$ can reach $j$ both directly and indirectly, and we see by the two cases above that we also get $f_{ij}>0$.
+
+By the cases we went through above, we know that if two states communicate under $Q$, then they also communicate under $P$. Now, as $Q$ is irreducible, all its states communicate, and thus all of $P$'s states communicate. $P$ is irreducible.
+
+
+
+
+\par $P$ IS APERIODIC FOR NON-UNIFORM $\mu$ 
+
+For $\mu$ that is not uniform, there exists a maximum element (not necessarily unique) $\mu_t$ for some state $t$. Let us show that $p_{tt}>0$ in order to prove that $t$ is an aperiodic state. Recall define diagonals in $P$ as:
+
+\[p_{tt}=1-\sum_{k\neq t}q_{tk}\cdot min(1,\frac{\mu_k}{\mu_t})=1-\sum_{k\neq t}q_{tk}\cdot r_{kt}\]
+
+As we know that $\mu_t \geq \mu_k$ for all states $k$ (strictly greater for at least some cases, as this is not a uniform $\mu$), we have that
+
+\[r_{kt}\leq 1\]
+
+which again, at least some of which are strictly less than 1. Now this tells us that
+
+\[q_{tk}\cdot r_{kt}\leq q_{tk}\]
+
+for all states $k\neq t$, where at least for some states the inequality is strict. We can thus conclude that:
+
+\[\sum_{k\neq t}q_{tk}\cdot r_{kt}< \sum_{k\neq t}q_{tk}\]
+
+we use all this to find that:
+
+\[p_{tt}=1-\sum_{k\neq t}q_{tk}\cdot r_{kt}>1-\sum_{k\neq t}q_{tk}=q_{tt}\]
+
+As $p_{tt}>q_{tt}$, we can safely conclude that $p_{tt}>0$, and thus state $t$ is aperiodic. Recall, however, that we proved earlier that $P$ is irreducible (i.e $P$ is one equivalence class). As aperiodicity is a class property, we can finally conclude that $P$ is aperiodic.
+
+This proof might be a bit tedious to go through, so let us understand the intuition of why this all works. In essence, it has to do with the way the Metropolis Algorithm functions. Starting at state $i$, a transition to state $j$ (assuming it does not create forbidden travel) is accepted with probability $P(U\leq\frac{\mu_i}{\mu_j})$, where $U$ follows uniform[0,1]. As already stated in the project description, a uniform $\mu$ implies that all (non-forbidden) transitions are accepted. But when $\mu$ is not uniform, the ratios are not always 1. As discussed in the proof, if we take our state $t$ and propose a move (i.e switching of two cities) to state $j$ with $\mu_j<\mu_t$, we accept it with probability:
+
+\[P(U\leq\frac{\mu_j}{\mu_t})=\frac{\mu_j}{\mu_t}<1\]
+
+and thus the probability of rejecting the transition is:
+
+\[1-P(U\leq\frac{\mu_j}{\mu_t})=1-\frac{\mu_j}{\mu_t}>0\]
+
+which in turn implies that we can stay at $t$ with positive probability (i.e $p_{tt}>0$).
+
 
 ## Task 3 - Symmetry of Q
 *Check that $Q$ is symmetric.*
