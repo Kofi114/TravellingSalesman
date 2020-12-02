@@ -453,26 +453,26 @@ There is alot to unpack but very concisely it takes two arguments <span class="m
 <div id="observations" class="section level3">
 <h3>Observations</h3>
 <p>Now let us test the algorithm using the same arbitrary forbidden cities from above and a <span class="math inline">\(Uni(0,1)\)</span> distributed distance matrix, additionally choose <span class="math inline">\(n=1000\)</span> and <span class="math inline">\(m=5000\)</span></p>
-<pre class="r"><code>tspMCMC(1000,5000)</code></pre>
-<pre><code>## [1] 9.949288</code></pre>
+<pre class="r"><code>tspMCMC(150,250)</code></pre>
+<pre><code>## [1] 9.620436</code></pre>
 <p>Furthermore re-initializing our graph but keeping the distance matrix fixed we can observe the results for multiple arbitrary choices of n and m.</p>
-<pre class="r"><code>tspMCMC(1000,5000)
-tspMCMC(2000,10000)
-tspMCMC(4000,20000)
-tspMCMC(60000,300000)</code></pre>
-<pre><code>## tspMCM( 1000 , 5000 ) 
-## Rejection Counter:  623 
-## Average Return Time: 10.31046 units</code></pre>
-<pre><code>## tspMCM( 2000 , 10000 ) 
-## Rejection Counter:  1297 
-## Average Return Time: 10.29479 units</code></pre>
-<pre><code>## tspMCM( 4000 , 20000 ) 
-## Rejection Counter:  2552 
-## Average Return Time: 10.26593 units</code></pre>
-<pre><code>## tspMCM( 60000 , 3e+05 ) 
-## Rejection Counter:  38000 
-## Average Return Time: 10.29837 units</code></pre>
-<pre><code>## Computational Length: 23.74448 seconds</code></pre>
+<pre class="r"><code>tspMCMC(150,250)
+tspMCMC(250,500)
+tspMCMC(500,1000)
+tspMCMC(1000,2000)</code></pre>
+<pre><code>## tspMCM( 150 , 250 ) 
+## Rejection Counter:  34 
+## Average Return Time: 10.41201 units</code></pre>
+<pre><code>## tspMCM( 250 , 500 ) 
+## Rejection Counter:  74 
+## Average Return Time: 10.69663 units</code></pre>
+<pre><code>## tspMCM( 500 , 1000 ) 
+## Rejection Counter:  161 
+## Average Return Time: 10.4491 units</code></pre>
+<pre><code>## tspMCM( 1000 , 2000 ) 
+## Rejection Counter:  311 
+## Average Return Time: 10.40296 units</code></pre>
+<pre><code>## Computational Length: 0.3675909 seconds</code></pre>
 </div>
 <div id="appendix" class="section level3">
 <h3>Appendix</h3>

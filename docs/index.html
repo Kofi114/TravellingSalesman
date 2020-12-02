@@ -11,7 +11,7 @@
 
 
 
-<title>Travelling Salesman</title>
+<title>Metropolis Algorithm for Expectations</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -278,7 +278,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Travelling Salesman</a>
+      <a class="navbar-brand" href="index.html">Metropolis Algorithm for Expectations</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -300,14 +300,20 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Travelling Salesman</h1>
+<h1 class="title toc-ignore">Metropolis Algorithm for Expectations</h1>
 
 </div>
 
 
-<p>The objective of our project is to use a Metropolis algorithm with <span class="math inline">\(\mu=1\)</span> to simulate the expected travel time for a Hamiltonian circuit chosen uniformly. A Hamiltonian circuit is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point.</p>
-<p>There will be five pair of cities for which travel is forbidden. Since there are about ~<span class="math inline">\(20!\)</span> possible circuits(see visual below) the generator is constructed by choosing 2 cities uniformly from c(1:20) from a valid sequence and interchanging them to create a brand new sequence given the proposed sequence granted it is also valid.<br />
-<img src="index_files/figure-html/unnamed-chunk-2-1.png" width="1152" /></p>
+<p>The objective of this website is do project is to use a Metropolis algorithm with <span class="math inline">\(\mu=1\)</span>(no rejection) to simulate the expected travel time for a Hamiltonian circuit chosen uniformly. A Hamiltonian circuit is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point. The algorithm shines when its impossible to sample from <span class="math inline">\(\mu\)</span>,</p>
+There will be five pair of cities for which travel is forbidden. Since there are about ~<span class="math inline">\(20!\)</span> possible circuits(see visual below) the generator is constructed by choosing 2 cities uniformly from c(1:20) from a valid sequence and interchanging them to create a brand new sequence given the proposed sequence granted it is also valid.<br />
+
+<div class="figure" style="text-align: center">
+<img src="index_files/figure-html/unnamed-chunk-2-1.png" alt="2-D Graph with 20 vertices and 185 edges." width="1152" />
+<p class="caption">
+2-D Graph with 20 vertices and 185 edges.
+</p>
+</div>
 
 
 

@@ -1,7 +1,7 @@
-name: "Travelling Salesman"
+name: "Metropolis Algorithm for Expectations"
 output_dir: "docs"
 navbar:
-  title: Travelling Salesman
+  title: Introduction
   href: index.html
   left:
     - text: "Proofs"

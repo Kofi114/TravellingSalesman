@@ -100,7 +100,7 @@ There is alot to unpack but very concisely it takes two arguments $n$(integer) a
 ### Observations
 Now let us test the algorithm using the same arbitrary forbidden cities from above and a $Uni(0,1)$ distributed distance matrix, additionally choose $n=1000$ and $m=5000$ 
 ```{r eval=FALSE}
-tspMCMC(1000,5000)
+tspMCMC(150,250)
 
 ```
 
@@ -177,10 +177,10 @@ tspMCMC(1000,5000)
 ```
 Furthermore re-initializing our graph but keeping the distance matrix fixed we can observe the results for multiple arbitrary choices of n and m.
 ```{r eval=FALSE}
-tspMCMC(1000,5000)
-tspMCMC(2000,10000)
-tspMCMC(4000,20000)
-tspMCMC(60000,300000)
+tspMCMC(150,250)
+tspMCMC(250,500)
+tspMCMC(500,1000)
+tspMCMC(1000,2000)
 ```
 
 ```{r echo=FALSE}
@@ -255,10 +255,10 @@ while(i <= m+n){
    cat("Average Return Time:", answer, "units" , "\n")
 }
 start <- Sys.time()
-tspMCMC(1000,5000)
-tspMCMC(2000,10000)
-tspMCMC(4000,20000)
-tspMCMC(60000,300000)
+tspMCMC(150,250)
+tspMCMC(250,500)
+tspMCMC(500,1000)
+tspMCMC(1000,2000)
 cat("Computational Length:", Sys.time()-start, "seconds", "\n")
 ```
 
