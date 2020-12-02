@@ -59,7 +59,6 @@ while(i <= m+n){
     if(i<=n){#this is done to make sure we dont double count travel times
       S[i+1] <- S[i]
       i <- i + 1
-      repetition_counter = repetition_counter + 1
     }
     rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
@@ -67,7 +66,6 @@ while(i <= m+n){
 }
    answer = mean(travel_time)
    print(length(travel_time))
-   print(repetition_counter)
    print(rejection_counter)
    print(trials)
    return(answer)

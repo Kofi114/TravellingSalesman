@@ -1,5 +1,5 @@
 ---
-title: "Analysis"
+title: "Travelling Salesperson"
 output:
   html_document:
     toc: yes
@@ -10,275 +10,256 @@ output:
       after_body: footer.html
       in_header: header.html
 ---
-### Objectives
-A short description of the projects main problem is available on our [home page](index.html). We are
-tasked with writing a simulation that choose large n and m that we can sample the expected travel 
-time of m-n+1 circuits which we are asked to show is approximately the true expected travel time of a circuit
-chosen uniformly $$ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)$$. 
-Towards this goal we first labeled 20 cities numerically from 1:20
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 5px;}
+</style>
+### Objective
+An abstract for our project is available on our [home page](index.html). On this page we are going to discuss
+the R simulation that computes the mean travel time of 
+$m+1$ circuits identically distributed uniformly at random. $m$ and $n$ will be parameters to our simulation where $n$ is number of trials until equilibrium from which the expectation of the next $m$ can be worked out in this fashion,  $$ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)$$ 
+<br>
+Towards this goal we first label 20 cities numerically from 1:20
 ```{r}
 U <-c(1:20) #vertices
 ```
-In graph terminology these are our vertices and will make up the elements within our state space. Originally 
-we had proceeded with the idea that we can sample from a generator matrix that would simulate all the Hamiltonian circuits but this would require non-existent computing power to generate a $20!$ by $20!$ matrix.
-
-Thus its best to consider the state space as a collection of all the valid circuits of which there are 
-```{r echo=FALSE}
-factorial(20)
-```
-Thus the generator isn't a matrix but instead a method which will choose two cities uniformly at random. Before writing the method, we first construct the edges as per the requirement. To this end we first constructed a $20$ by $20$ distance matrix D and populated it using a uniform(0,1) density.
+In graph terminology these are our vertices and will make up the elements within our state space. Next we resolve the issue of forbidden travel and the missing component of our Hamiltonian graph, edges.  
 
 ### Distance Matrix
 ```{r}
 D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
 ```
-
-
-We then manually specified 5 pairs (i,j) for which the entry in the distance matrix D would be zero implying travel restriction.We then transform D into a symmetric matrix by assigning the lower triangular of the matrix the entries of the upper triangular of the transpose of D.Finally we set the diagonal entries to zero as its assumed the distance from city i to i is 0. Thus as you can see there are 185 pairs with positive densities (19*20)/2 - 5 from the matrix or ${20 \choose 2}-5$. 
+We then manually specify 5 pairs $(i,j)$, $i,j \in U$ for which travel is forbidden(i.e. the edge between $i$, $j$ is weighted 0). In the context of our simulation that means a $0$ entry in the distance matrix. 
 ```{r}
 D[4,6] = 0
 D[9,13]= 0
 D[1,19]= 0 
 D[10,17]= 0  
 D[3,8] = 0 #NO TRAVEL NO DISTANCE
+```
+We are almost done setting up our graph except for a couple outstanding requirements.First the edge connecting a pair of cities is more than likely not identical.Second, travel from city $i$ to city $i$ for $i \in U$ is greater than $0$ and most importantly we still haven't assigned the other half of the travel restrictions. To satisfy these requirement, we transform $D$ into a symmetric matrix by assigning the lower triangular of $D$ the entries of the upper triangular of the transpose of D and explicitly set the diagonal entries to zero. Thus as you can see there are 185 pairs with positive real distance,  $(19*20)/2 - 5$ from observing $D$ or ${20 \choose 2}-5$. 
+```{r}
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
 ```
-We note that the forbidden pairs must be entered in the form of D[i,j] where i<j or else when we go to make the matrix symmetric the upper triangular entry is still most likely non-zero. This can be remedied by manually make all 10 entries 0, or letting j<i and assigning the upper-triangular of D with the lower triangular of the transpose of D or in a proper application handling user input.
+
+
+Notice that the forbidden pairs were [entered](#distance-matrix) in the form of D[i,j] where i<j or else when we go to make the matrix symmetric the upper triangular entry is still non-zero. This can be remedied by manually making all 10 entries 0, or specifying D[i,j], j<i and assigning the upper-triangular of D with the upper-triangular of the transpose of D
+```{r}
+D[upper.tri(D)] = t(D)[upper.tri(D)] #symmetric matrix
+```
+
+or in a more proper application handling user input.
+
+<br>
 
 ### Algorithm 
 
-Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. As mentioned above, the most prudent method as suggested was a method which picks two points uniformly at random and intechanges them. The code chunck below is the function that we desire.
-```{r}
+Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. As mentioned above, the most prudent idea as suggested is a method which picks two points uniformly at random and interchanges them. The code chunck below is portion of the function that accomplishes this task and our broader [objective](#objective).
+```{r eval=FALSE}
 tspMCMC <- function(n,m){
-S <- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
-rejection_counter <- 0
-i <- 1
-j <- 1
-travel_time <- rep(0, m-n+1)
-while(i <= m){
-  P <- sample(1:20,size=1) #basic sampling 
-  Q <- sample(1:20,size=1) #likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
+v <- sample(U,size = 20, replace=FALSE) #without repetition sample first sequence
+while(indicatorPermissible(v)==0){#make sure its valid
+  v <- sample(U,size=20, replace=FALSE) 
+}
+S <- list(v) #record it in the state space
+...
+...
+...
+while(i <= m+n){
+  P <- sample(U,size=1) #basic sampling 
+  Q <- sample(U,size=1) #likewise for proposed state, 
   index_p = match(P, unlist(S[i])) #the position of P in the sequence
   index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
-  k <- unlist(S[i])
-  if(indicatorPermissible(k,index_p,index_q) == 1){
-    if(i >= n){
-      travel_time[j] = distance_travelled(S[i])
+  k <- unlist(S[i])  
+  z <- c(replace(k, c(index_p,index_q), c(Q,P))) #interchange P and Q 
+  if(indicatorPermissible(z) == 1){#if the new sequence is valid
+    if(i >= n){#has equilibrium been reached yet?
+      travel_time[j] = distance_travelled(S[i]) #store travel time
       j <- j + 1
     }
-    S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
-    i <- i + 1
-    #return(S[i+1])
+    S[i+1] <- list(z) #adds the new sequence to collection of sampled state spaces
+    i <- i + 1 
   }
   else{
+    if(i<=n){#this is done to make sure we dont double count travel times
+      S[i+1] <- S[i]
+      i <- i + 1
+    }
     rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
 }
-   answer = mean(travel_time)*(m-n+1)/(m+1)
-   print(length(travel_time))
-   print(rejection_counter)
-   return(answer)
 }
-
 ```
-There is alot to unpack but very concisely it takes two arguments n(integer) and m(integer). It then samples two points, extracts their place in the sequence and pass it to along with the sequence to another function called *indicatorPermissable.* It's the responsibility of the *indicatorPermissable* to return 0 if the proposed interchange creates a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns 1 we accept the new sequence and add it to the list of valid circuits that we have sampled.Furthermore if we have already sampled n **valid** circuits we also start computing the travel times by passing the sequence to a function called *distance_travelled*. 
+There is alot to unpack but very concisely it takes two arguments $n$(integer) and $m$(integer). We then randomly samples a sequence without-repetition which we check is valid and add to our record of the sampled sequence. From there we sample two points, extracts their place in the sequence and use the last record valid sequence, $X_{i}$ to propose a new sequence. Since we are using a Metropolis with $\mu = 1$(i.e. no rejection) we are only responsible for checking the sequence $X_{i+1}$ is valid. This is where *indicatorPermissable($X_{i+1}$)* comes in. It's the responsibility of the *indicatorPermissable* function to return $0$ if the proposed interchange creates a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns $1$ we accept the new sequence as valid and add it to the record(i.e *list*) of valid circuits and increment $i[1]$.Furthermore if we have already reached equilibrium or $n$ trials, we also start computing the travel times by passing the sequence to a function called *distance_travelled*. 
+<div class="blue">
+[1]As you can see in the code chunk above, our control sequence of choice is a while loop. The reason being, unlike a for-loop we have more control on our index $i$.For example, until the simulation reaches equilibrium we aren't entirely concerned with repeat sequences. When we go to compute travel-times($i \geq n$) however we control for repeat samples by ignoring trials for which *indicatorPermissable* returns 0 and trying again at index $i$. 
+</div>
 
-One decision of importance that was taken was the use of a while loop instead of a for loop. This is done for multiple reasons one of which is that it gives up greater control of our simulation. It allows us to sample m unique circuits without repetitions. For example, if there is a proposed interchange that is rejected we don't add it to the list of valid sequences we have sampled. This is done so that we don't have to compute the travel time for a sequence multiple times in the case where we have rejected an interchange. 
+<br>
 
 ### Observations
-Now let us test the algorithm using the same forbidden cities from above and a Uni(0,1) distributed distance matrix, additionally choose $n=20,000$ and $m=40,000$ 
+Now let us test the algorithm using the same arbitrary forbidden cities from above and a $Uni(0,1)$ distributed distance matrix, additionally choose $n=1000$ and $m=5000$ 
 ```{r eval=FALSE}
-tspMCMC(20000,40000)
+tspMCMC(1000,5000)
 
 ```
 
 ```{r echo=FALSE}
 U <-c(1:20) #vertices
-D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
+D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #non-stochastic uniformly distributed distance matrix 
 D[4,6] = 0
 D[9,13]= 0
 D[1,19]= 0 
 D[10,17]= 0  
-D[3,8] = 0 #NO TRAVEL NO DISTANCE
+D[3,8] = 0 #NO TRAVEL NO DISTANCE, REMEMBER FORBIDDEN PAIRS MUST FOLLOW D[i,j]=0, i<j
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
 
-indicatorPermissible <- function(C,p,q){
-  if(p == q){
+indicatorPermissible <- function(z){
+  if(D[z[1],z[20]] == 0){ #checks the endpoints of the sequence
     return(0)
   }
-  if(p != 1 && p!= 20 && q!= 1 && q!= 20){ #normal interchange
-    for(i in c(-1,1)){
-      if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
-        return(0)
-      }
-    }
-  }
-  else{#case where interchange occurs at one or both of the endpoints of sequence
-    if(p == 1){
-      if(D[C[20],C[q]] == 0 || D[C[2],C[q]] == 0)
-        return(0)
-    }
-    else if(p == 20){
-      if(D[C[1],C[q]] == 0 || D[C[19],C[q]] == 0)
-        return(0)
-    }
-    else if(q==1){
-      if(D[C[20],C[p]] == 0 || D[C[2],C[p]] == 0)
-        return(0)
-    }
-    else{
-      if(D[C[1],C[p]] == 0 || D[C[19],C[p]] == 0)
-        return(0)
-    }
+  for(i in 1:19){ #looking at the vertex at index i, consults D to make sure the edge connecting to the vertex at index i+1 is non-zero
+    if(D[z[i],z[i+1]] == 0)
+      return(0)
   }
   return(1)
 }
 
 distance_travelled <- function(L){
   C <- unlist(L)
-  f <- 0
+  f <- D[C[20],C[1]] #endpoints require special care
   for(i in 1:19){
-    f = f + D[C[i],C[i+1]]  
+    f = f + D[C[i],C[i+1]]  #similar to indicatorPermissible, except it tallys the edges
   }
-  return(f<- f + D[C[20],C[1]])
+  return(f)
 }
 
 tspMCMC <- function(n,m){
-start <- Sys.time()
-S <- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
+v <- sample(U,size = 20, replace=FALSE) #without repetition sample first sequence
+while(indicatorPermissible(v)==0){#make sure its valid
+  v <- sample(U,size=20, replace=FALSE) 
+}
+S <- list(v) #record it in the state space
 rejection_counter <- 0
+trials <- 1
 i <- 1
 j <- 1
-travel_time <- rep(0, m-n+1)
-while(i <= m){
-  P <- sample(1:20,size=1) #basic sampling 
-  Q <- sample(1:20,size=1) #likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
+repetition_counter <- 0
+travel_time <- rep(0, m+1) #init. the travel time vector
+while(i <= m+n){
+  P <- sample(U,size=1) #basic sampling 
+  Q <- sample(U,size=1) #likewise for proposed state, 
   index_p = match(P, unlist(S[i])) #the position of P in the sequence
   index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
-  k <- unlist(S[i])
-  if(indicatorPermissible(k,index_p,index_q) == 1){
-    if(i >= n){
-      travel_time[j] = distance_travelled(S[i])
+  k <- unlist(S[i])  
+  z <- c(replace(k, c(index_p,index_q), c(Q,P))) #interchange P and Q 
+  if(indicatorPermissible(z) == 1){#if the new sequence is valid
+    if(i >= n){#has equilibrium been reached yet?
+      travel_time[j] = distance_travelled(S[i]) #store travel time
       j <- j + 1
     }
-    S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
-    i <- i + 1
-    #return(S[i+1])
+    S[i+1] <- list(z) #adds the new sequence to collection of sampled state spaces
+    i <- i + 1 
   }
   else{
+    if(i<=n){#this is done to make sure we dont double count travel times
+      S[i+1] <- S[i]
+      i <- i + 1
+    }
     rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
 }
-   answer = mean(travel_time)*(m-n+1)/(m+1)
-   
-   cat("Rejection Counter: ", rejection_counter, "\n")
-   cat("Average Return Time:", answer, "seconds" , "\n")
-   cat("Computational Length:", Sys.time()-start, "seconds", "\n")
-   # return(answer)
+   answer <- mean(travel_time)
+   return(answer)
 }
-tspMCMC(20000,40000)
+tspMCMC(1000,5000)
 ```
-Furthermore keeping the distance matrix fixed we can observe the results for multiple choices of n and m.
+Furthermore re-initializing our graph but keeping the distance matrix fixed we can observe the results for multiple arbitrary choices of n and m.
 ```{r eval=FALSE}
-tspMCMC(20000,40000)
-tspMCMC(40000,80000)
-tspMCMC(80000,160000)
-tspMCMC(160000,320000)
+tspMCMC(1000,5000)
+tspMCMC(2000,10000)
+tspMCMC(4000,20000)
+tspMCMC(60000,300000)
 ```
 
 ```{r echo=FALSE}
 U <-c(1:20) #vertices
-D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
+D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #non-stochastic uniformly distributed distance matrix 
 D[4,6] = 0
 D[9,13]= 0
 D[1,19]= 0 
 D[10,17]= 0  
-D[3,8] = 0 #NO TRAVEL NO DISTANCE
+D[3,8] = 0 #NO TRAVEL NO DISTANCE, REMEMBER FORBIDDEN PAIRS MUST FOLLOW D[i,j]=0, i<j
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
 
-indicatorPermissible <- function(C,p,q){
-  if(p == q){
+indicatorPermissible <- function(z){
+  if(D[z[1],z[20]] == 0){ #checks the endpoints of the sequence
     return(0)
   }
-  if(p != 1 && p!= 20 && q!= 1 && q!= 20){ #normal interchange
-    for(i in c(-1,1)){
-      if(D[C[p+i],C[q]] == 0 || D[C[q+i],C[p]]==0){
-        return(0)
-      }
-    }
-  }
-  else{#case where interchange occurs at one or both of the endpoints of sequence
-    if(p == 1){
-      if(D[C[20],C[q]] == 0 || D[C[2],C[q]] == 0)
-        return(0)
-    }
-    else if(p == 20){
-      if(D[C[1],C[q]] == 0 || D[C[19],C[q]] == 0)
-        return(0)
-    }
-    else if(q==1){
-      if(D[C[20],C[p]] == 0 || D[C[2],C[p]] == 0)
-        return(0)
-    }
-    else{
-      if(D[C[1],C[p]] == 0 || D[C[19],C[p]] == 0)
-        return(0)
-    }
+  for(i in 1:19){ #looking at the vertex at index i, consults D to make sure the edge connecting to the vertex at index i+1 is non-zero
+    if(D[z[i],z[i+1]] == 0)
+      return(0)
   }
   return(1)
 }
 
 distance_travelled <- function(L){
   C <- unlist(L)
-  f <- 0
+  f <- D[C[20],C[1]] #endpoints require special care
   for(i in 1:19){
-    f = f + D[C[i],C[i+1]]  
+    f = f + D[C[i],C[i+1]]  #similar to indicatorPermissible, except it tallys the edges
   }
-  return(f<- f + D[C[20],C[1]])
+  return(f)
 }
 
 tspMCMC <- function(n,m){
-start <- Sys.time()
-S <- list(c(1:20)) #preferably this sequence will be randomly generated and a proper circuit.
+v <- sample(U,size = 20, replace=FALSE) #without repetition sample first sequence
+while(indicatorPermissible(v)==0){#make sure its valid
+  v <- sample(U,size=20, replace=FALSE) 
+}
+S <- list(v) #record it in the state space
 rejection_counter <- 0
+trials <- 1
 i <- 1
 j <- 1
-travel_time <- rep(0, m-n+1)
-while(i <= m){
-  P <- sample(1:20,size=1) #basic sampling 
-  Q <- sample(1:20,size=1) #likewise for proposed state, additionally Q <- sample(1:20,size=1, prob =D[P,]) removes need for indicatorPermissable
+repetition_counter <- 0
+travel_time <- rep(0, m+1) #init. the travel time vector
+while(i <= m+n){
+  P <- sample(U,size=1) #basic sampling 
+  Q <- sample(U,size=1) #likewise for proposed state, 
   index_p = match(P, unlist(S[i])) #the position of P in the sequence
   index_q = match(Q, unlist(S[i])) #likewise for the second element in the pair
-  k <- unlist(S[i])
-  if(indicatorPermissible(k,index_p,index_q) == 1){
-    if(i >= n){
-      travel_time[j] = distance_travelled(S[i])
+  k <- unlist(S[i])  
+  z <- c(replace(k, c(index_p,index_q), c(Q,P))) #interchange P and Q 
+  if(indicatorPermissible(z) == 1){#if the new sequence is valid
+    if(i >= n){#has equilibrium been reached yet?
+      travel_time[j] = distance_travelled(S[i]) #store travel time
       j <- j + 1
     }
-    S[i+1] <- list(c(replace(k, c(index_p,index_q), c(Q,P)))) #adds a new sequence to S interchanging P and Q 
-    i <- i + 1
-    #return(S[i+1])
+    S[i+1] <- list(z) #adds the new sequence to collection of sampled state spaces
+    i <- i + 1 
   }
   else{
+    if(i<=n){#this is done to make sure we dont double count travel times
+      S[i+1] <- S[i]
+      i <- i + 1
+    }
     rejection_counter = rejection_counter+1 #see how many time our proposed transition introduced forbidden travel
   }
 }
-   answer = mean(travel_time)*(m-n+1)/(m+1)
+   answer <- mean(travel_time)
    cat("tspMCM(",n,",",m,")", "\n")
    cat("Rejection Counter: ", rejection_counter, "\n")
-   cat("Average Return Time:", answer, "seconds" , "\n")
-   # return(answer)
+   cat("Average Return Time:", answer, "units" , "\n")
 }
 start <- Sys.time()
-tspMCMC(20000,40000)
-tspMCMC(40000,80000)
-tspMCMC(80000,160000)
-# tspMCMC(160000,320000)
-# tspMCMC(1000000,2000000)
-cat("Computational Length:", Sys.time()-start, "minutes", "\n")
+tspMCMC(1000,5000)
+tspMCMC(2000,10000)
+tspMCMC(4000,20000)
+tspMCMC(60000,300000)
+cat("Computational Length:", Sys.time()-start, "seconds", "\n")
 ```
 
 ### Appendix 
