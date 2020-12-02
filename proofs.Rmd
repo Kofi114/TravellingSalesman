@@ -70,16 +70,13 @@ As this proof is for any arbitrary states $i$ and $j$ in $P$, we can conclude th
 *Write out a proof that that $P$ is irreducible, and that if $\mu$ isn't perfectly uniform then* 
 *P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a* *site where where a transition can occur]*
 
-$Q$ IS IRREDUCIBLE:
+### $Q$ IS IRREDUCIBLE
 
-As established in Task 1, as all the elements of $\mu$ are strictly positive, the ratios $\frac{\mu_i}{\mu_j}$ for any $i$ and $j$ can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:
+As established in [Task 1](#task-1--reversibility-of-mu), all the elements of $\mu$ are strictly positive, the ratios $\frac{\mu_i}{\mu_j}$ for any $i$ and $j$ can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:
 
 \[min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]
 
 for all $i$ and $j$.
-
-
-
 
 
 Now, recall that $P$ being reducible means have a return probability $f_{ij}>0$ for all states $i$ and $j$, where:
@@ -97,34 +94,32 @@ $Q$ being irreducible implies at least one of the following two for any two stat
 
 
 Case 1: We can transition directly: $q_{ij}>0$
-    
-    In this case, notice that $p_{ij}=q_{ij}\cdot r_{ij}$. And as we established $r_{ij}>0$, we can conclude that $p_{ij}>0$. Notice that this implies that $f_{ij}>0$
+
+In this case, notice that $p_{ij}=q_{ij}\cdot r_{ij}$. And as we established $r_{ij}>0$, we can conclude that $p_{ij}>0$. Notice that this implies that $f_{ij}>0$
     
 Case 2: We reach $j$ from $i$ indirectly: $i\to a_1 \to a_2 \to ... \to a_n \to j$
+In this case, we clearly have that $q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}>0$
     
-    In this case, we clearly have that $q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}>0$
-    
-    Recall that as all our $\mu$ ratios are strictly positive, we can claim that:
+Recall that as all our $\mu$ ratios are strictly positive, we can claim that:
     
     
-    \[r_{ia_{1}}q_{ia_{1}}\cdot r_{a_{1}a_{2}}q_{a_{1}a_{2}}\cdot ...\cdot r_{a_{n-1}a_{n}}q_{a_{n-1}a_{n}}\cdot r_{a_{n}j}q_{a_{n}j}>0\]
+\[r_{ia_{1}}q_{ia_{1}}\cdot r_{a_{1}a_{2}}q_{a_{1}a_{2}}\cdot ...\cdot r_{a_{n-1}a_{n}}q_{a_{n-1}a_{n}}\cdot r_{a_{n}j}q_{a_{n}j}>0\]
     
-    Notice that this just another way of expressing:
+Notice that this is just another way of expressing:
     
-    \[p_{ia_{1}}\cdot p_{a_{1}a_{2}}\cdot ...\cdot p_{a_{n-1}a_{n}}\cdot p_{a_{n}j}>0\]
+\[p_{ia_{1}}\cdot p_{a_{1}a_{2}}\cdot ...\cdot p_{a_{n-1}a_{n}}\cdot p_{a_{n}j}>0\]
     
-    Which implies that $f_{ij}>0$.
+Which implies that $f_{ij}>0$.
     
 
 
 Needless to say, there is a the third case where $i$ can reach $j$ both directly and indirectly, and we see by the two cases above that we also get $f_{ij}>0$.
 
-By the cases we went through above, we know that if two states communicate under $Q$, then they also communicate under $P$. Now, as $Q$ is irreducible, all its states communicate, and thus all of $P$'s states communicate. $P$ is irreducible.
+By the cases we went through above, we now know that if two states communicate under $Q$, then they also communicate under $P$. Now, as $Q$ is irreducible, all its states communicate, and thus all of $P$'s states communicate. $P$ is irreducible.
 
 
 
-
-\par $P$ IS APERIODIC FOR NON-UNIFORM $\mu$ 
+### $P$ IS APERIODIC FOR NON-UNIFORM $\mu$ 
 
 For $\mu$ that is not uniform, there exists a maximum element (not necessarily unique) $\mu_t$ for some state $t$. Let us show that $p_{tt}>0$ in order to prove that $t$ is an aperiodic state. Recall define diagonals in $P$ as:
 

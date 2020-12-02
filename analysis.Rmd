@@ -8,6 +8,7 @@ output:
     theme: readable
     includes:
       after_body: footer.html
+      in_header: header.html
 ---
 ### Objectives
 A short description of the projects main problem is available on our [home page](index.html). We are
@@ -282,7 +283,15 @@ cat("Computational Length:", Sys.time()-start, "minutes", "\n")
 
 ### Appendix 
 
-<a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R" download> Code </a>
+Below is the code. 
+<!-- <a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R" download> Code </a> -->
+<!---Interactive-->
 
+<iframe style="margin:0 auto; min-width: 100%;" id="circuitFrame" class="interactive" src="https://blackmonk.shinyapps.io/CircuitR/" scrolling="no" frameborder="no"></iframe>
+
+<!---------------->
 <!-- The following R file contains our <a href="/task4/circuit.R" download> code </a> -->
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
+<script>
+  iFrameResize({}, ".interactive");
+</script>

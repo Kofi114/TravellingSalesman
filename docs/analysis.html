@@ -27,6 +27,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
 <script src="site_libs/anchor-sections-1.0/anchor-sections.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.min.js" type="text/javascript"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -443,32 +444,38 @@ while(i &lt;= m){
 <h3>Observations</h3>
 <p>Now let us test the algorithm using the same forbidden cities from above and a Uni(0,1) distributed distance matrix, additionally choose <span class="math inline">\(n=20,000\)</span> and <span class="math inline">\(m=40,000\)</span></p>
 <pre class="r"><code>tspMCMC(20000,40000)</code></pre>
-<pre><code>## Rejection Counter:  12168 
-## Average Return Time: 5.117453 seconds 
-## Computational Length: 3.454636 seconds</code></pre>
+<pre><code>## Rejection Counter:  12206 
+## Average Return Time: 4.807014 seconds 
+## Computational Length: 1.654704 seconds</code></pre>
 <p>Furthermore keeping the distance matrix fixed we can observe the results for multiple choices of n and m.</p>
 <pre class="r"><code>tspMCMC(20000,40000)
 tspMCMC(40000,80000)
 tspMCMC(80000,160000)
 tspMCMC(160000,320000)</code></pre>
 <pre><code>## tspMCM( 20000 , 40000 ) 
-## Rejection Counter:  12053 
-## Average Return Time: 4.888357 seconds</code></pre>
+## Rejection Counter:  12075 
+## Average Return Time: 5.198942 seconds</code></pre>
 <pre><code>## tspMCM( 40000 , 80000 ) 
-## Rejection Counter:  24092 
-## Average Return Time: 4.897325 seconds</code></pre>
+## Rejection Counter:  24588 
+## Average Return Time: 5.204857 seconds</code></pre>
 <pre><code>## tspMCM( 80000 , 160000 ) 
-## Rejection Counter:  48368 
-## Average Return Time: 4.897216 seconds</code></pre>
-<pre><code>## Computational Length: 18.65156 minutes</code></pre>
+## Rejection Counter:  48598 
+## Average Return Time: 5.209582 seconds</code></pre>
+<pre><code>## Computational Length: 10.29397 minutes</code></pre>
 </div>
 <div id="appendix" class="section level3">
 <h3>Appendix</h3>
-<p><a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R" download> Code </a></p>
+<p><a href="https://raw.githubusercontent.com/Kofi114/TravellingSalesman/main/task4/circuit.R" download> Code </a> <!---Interactive--></p>
+<iframe style="margin:0 auto; min-width: 100%;" id="circuitFrame" class="interactive" src="https://blackmonk.shinyapps.io/CircuitR/" scrolling="no" frameborder="no">
+</iframe>
+<!---------------->
 <!-- The following R file contains our <a href="/task4/circuit.R" download> code </a> -->
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
 
 </div>
+<script>
+  iFrameResize({}, ".interactive");
+</script>
 </div>
 
 &nbsp;

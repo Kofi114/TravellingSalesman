@@ -407,6 +407,47 @@ div.tocify {
 <div id="task-2---irreduciblity-aperiodicity" class="section level2">
 <h2>Task 2 - Irreduciblity &amp; Aperiodicity</h2>
 <p><em>Write out a proof that that <span class="math inline">\(P\)</span> is irreducible, and that if <span class="math inline">\(\mu\)</span> isn’t perfectly uniform then</em> <em>P is aperiodic. [Hint: Show that if <span class="math inline">\(i \to j\)</span> under <span class="math inline">\(Q\)</span> then <span class="math inline">\(i \to j\)</span> under <span class="math inline">\(P\)</span>. For aperidocity, consider a* *site where where a transition can occur]</em></p>
+<div id="q-is-irreducible" class="section level3">
+<h3><span class="math inline">\(Q\)</span> IS IRREDUCIBLE:</h3>
+<p>As established in <a href="#task-1--reversibility-of-mu">Task 1</a>, all the elements of <span class="math inline">\(\mu\)</span> are strictly positive, the ratios <span class="math inline">\(\frac{\mu_i}{\mu_j}\)</span> for any <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:</p>
+<p><span class="math display">\[min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]</span></p>
+<p>for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
+<p>Now, recall that <span class="math inline">\(P\)</span> being reducible means have a return probability <span class="math inline">\(f_{ij}&gt;0\)</span> for all states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, where:</p>
+<p><span class="math display">\[f_{ij}=p_{ij}+\sum_{k\neq j}p_{ik}f_{kj}\]</span></p>
+<p>In words, we have that we can go directly go from <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(p_{ij}&gt;0\)</span>), or we can reach <span class="math inline">\(j\)</span> from <span class="math inline">\(i\)</span> via other states (<span class="math inline">\(p_{ia}\cdot p_{ab}\cdot p_{bc}\cdot p_{cj}&gt;0\)</span>, where each <span class="math inline">\(p\)</span> is strictly positive), or possibly both. Now, we already know this holds true for <span class="math inline">\(Q\)</span>, as it is irreducible.</p>
+<p>Now, let the minimum of 1 and the ratio of the <span class="math inline">\(\mu\)</span>’s for each transition from states <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span> be <span class="math inline">\(r_{ij}\)</span>:</p>
+<p><span class="math display">\[r_{ij}=min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]</span></p>
+<p><span class="math inline">\(Q\)</span> being irreducible implies at least one of the following two for any two states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
+<p>Case 1: We can transition directly: <span class="math inline">\(q_{ij}&gt;0\)</span></p>
+<p>In this case, notice that <span class="math inline">\(p_{ij}=q_{ij}\cdot r_{ij}\)</span>. And as we established <span class="math inline">\(r_{ij}&gt;0\)</span>, we can conclude that <span class="math inline">\(p_{ij}&gt;0\)</span>. Notice that this implies that <span class="math inline">\(f_{ij}&gt;0\)</span></p>
+<p>Case 2: We reach <span class="math inline">\(j\)</span> from <span class="math inline">\(i\)</span> indirectly: <span class="math inline">\(i\to a_1 \to a_2 \to ... \to a_n \to j\)</span> In this case, we clearly have that <span class="math inline">\(q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}&gt;0\)</span></p>
+<p>Recall that as all our <span class="math inline">\(\mu\)</span> ratios are strictly positive, we can claim that:</p>
+<p><span class="math display">\[r_{ia_{1}}q_{ia_{1}}\cdot r_{a_{1}a_{2}}q_{a_{1}a_{2}}\cdot ...\cdot r_{a_{n-1}a_{n}}q_{a_{n-1}a_{n}}\cdot r_{a_{n}j}q_{a_{n}j}&gt;0\]</span></p>
+<p>Notice that this is just another way of expressing:</p>
+<p><span class="math display">\[p_{ia_{1}}\cdot p_{a_{1}a_{2}}\cdot ...\cdot p_{a_{n-1}a_{n}}\cdot p_{a_{n}j}&gt;0\]</span></p>
+<p>Which implies that <span class="math inline">\(f_{ij}&gt;0\)</span>.</p>
+<p>Needless to say, there is a the third case where <span class="math inline">\(i\)</span> can reach <span class="math inline">\(j\)</span> both directly and indirectly, and we see by the two cases above that we also get <span class="math inline">\(f_{ij}&gt;0\)</span>.</p>
+<p>By the cases we went through above, we now know that if two states communicate under <span class="math inline">\(Q\)</span>, then they also communicate under <span class="math inline">\(P\)</span>. Now, as <span class="math inline">\(Q\)</span> is irreducible, all its states communicate, and thus all of <span class="math inline">\(P\)</span>’s states communicate. <span class="math inline">\(P\)</span> is irreducible.</p>
+</div>
+<div id="p-is-aperiodic-for-non-uniform-mu" class="section level3">
+<h3><span class="math inline">\(P\)</span> IS APERIODIC FOR NON-UNIFORM <span class="math inline">\(\mu\)</span></h3>
+<p>For <span class="math inline">\(\mu\)</span> that is not uniform, there exists a maximum element (not necessarily unique) <span class="math inline">\(\mu_t\)</span> for some state <span class="math inline">\(t\)</span>. Let us show that <span class="math inline">\(p_{tt}&gt;0\)</span> in order to prove that <span class="math inline">\(t\)</span> is an aperiodic state. Recall define diagonals in <span class="math inline">\(P\)</span> as:</p>
+<p><span class="math display">\[p_{tt}=1-\sum_{k\neq t}q_{tk}\cdot min(1,\frac{\mu_k}{\mu_t})=1-\sum_{k\neq t}q_{tk}\cdot r_{kt}\]</span></p>
+<p>As we know that <span class="math inline">\(\mu_t \geq \mu_k\)</span> for all states <span class="math inline">\(k\)</span> (strictly greater for at least some cases, as this is not a uniform <span class="math inline">\(\mu\)</span>), we have that</p>
+<p><span class="math display">\[r_{kt}\leq 1\]</span></p>
+<p>which again, at least some of which are strictly less than 1. Now this tells us that</p>
+<p><span class="math display">\[q_{tk}\cdot r_{kt}\leq q_{tk}\]</span></p>
+<p>for all states <span class="math inline">\(k\neq t\)</span>, where at least for some states the inequality is strict. We can thus conclude that:</p>
+<p><span class="math display">\[\sum_{k\neq t}q_{tk}\cdot r_{kt}&lt; \sum_{k\neq t}q_{tk}\]</span></p>
+<p>we use all this to find that:</p>
+<p><span class="math display">\[p_{tt}=1-\sum_{k\neq t}q_{tk}\cdot r_{kt}&gt;1-\sum_{k\neq t}q_{tk}=q_{tt}\]</span></p>
+<p>As <span class="math inline">\(p_{tt}&gt;q_{tt}\)</span>, we can safely conclude that <span class="math inline">\(p_{tt}&gt;0\)</span>, and thus state <span class="math inline">\(t\)</span> is aperiodic. Recall, however, that we proved earlier that <span class="math inline">\(P\)</span> is irreducible (i.e <span class="math inline">\(P\)</span> is one equivalence class). As aperiodicity is a class property, we can finally conclude that <span class="math inline">\(P\)</span> is aperiodic.</p>
+<p>This proof might be a bit tedious to go through, so let us understand the intuition of why this all works. In essence, it has to do with the way the Metropolis Algorithm functions. Starting at state <span class="math inline">\(i\)</span>, a transition to state <span class="math inline">\(j\)</span> (assuming it does not create forbidden travel) is accepted with probability <span class="math inline">\(P(U\leq\frac{\mu_i}{\mu_j})\)</span>, where <span class="math inline">\(U\)</span> follows uniform[0,1]. As already stated in the project description, a uniform <span class="math inline">\(\mu\)</span> implies that all (non-forbidden) transitions are accepted. But when <span class="math inline">\(\mu\)</span> is not uniform, the ratios are not always 1. As discussed in the proof, if we take our state <span class="math inline">\(t\)</span> and propose a move (i.e switching of two cities) to state <span class="math inline">\(j\)</span> with <span class="math inline">\(\mu_j&lt;\mu_t\)</span>, we accept it with probability:</p>
+<p><span class="math display">\[P(U\leq\frac{\mu_j}{\mu_t})=\frac{\mu_j}{\mu_t}&lt;1\]</span></p>
+<p>and thus the probability of rejecting the transition is:</p>
+<p><span class="math display">\[1-P(U\leq\frac{\mu_j}{\mu_t})=1-\frac{\mu_j}{\mu_t}&gt;0\]</span></p>
+<p>which in turn implies that we can stay at <span class="math inline">\(t\)</span> with positive probability (i.e <span class="math inline">\(p_{tt}&gt;0\)</span>).</p>
+</div>
 </div>
 <div id="task-3---symmetry-of-q" class="section level2">
 <h2>Task 3 - Symmetry of Q</h2>
