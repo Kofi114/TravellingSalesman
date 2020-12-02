@@ -355,7 +355,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Travelling Salesman</a>
+      <a class="navbar-brand" href="index.html">Introduction</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -454,25 +454,25 @@ There is alot to unpack but very concisely it takes two arguments <span class="m
 <h3>Observations</h3>
 <p>Now let us test the algorithm using the same arbitrary forbidden cities from above and a <span class="math inline">\(Uni(0,1)\)</span> distributed distance matrix, additionally choose <span class="math inline">\(n=1000\)</span> and <span class="math inline">\(m=5000\)</span></p>
 <pre class="r"><code>tspMCMC(150,250)</code></pre>
-<pre><code>## [1] 9.620436</code></pre>
+<pre><code>## [1] 9.457152</code></pre>
 <p>Furthermore re-initializing our graph but keeping the distance matrix fixed we can observe the results for multiple arbitrary choices of n and m.</p>
 <pre class="r"><code>tspMCMC(150,250)
 tspMCMC(250,500)
 tspMCMC(500,1000)
 tspMCMC(1000,2000)</code></pre>
 <pre><code>## tspMCM( 150 , 250 ) 
-## Rejection Counter:  34 
-## Average Return Time: 10.41201 units</code></pre>
+## Rejection Counter:  46 
+## Average Return Time: 9.00992 units</code></pre>
 <pre><code>## tspMCM( 250 , 500 ) 
-## Rejection Counter:  74 
-## Average Return Time: 10.69663 units</code></pre>
+## Rejection Counter:  73 
+## Average Return Time: 9.425643 units</code></pre>
 <pre><code>## tspMCM( 500 , 1000 ) 
-## Rejection Counter:  161 
-## Average Return Time: 10.4491 units</code></pre>
+## Rejection Counter:  156 
+## Average Return Time: 9.249798 units</code></pre>
 <pre><code>## tspMCM( 1000 , 2000 ) 
-## Rejection Counter:  311 
-## Average Return Time: 10.40296 units</code></pre>
-<pre><code>## Computational Length: 0.3675909 seconds</code></pre>
+## Rejection Counter:  310 
+## Average Return Time: 9.262345 units</code></pre>
+<pre><code>## Computational Length: 0.6581919 seconds</code></pre>
 </div>
 <div id="appendix" class="section level3">
 <h3>Appendix</h3>
