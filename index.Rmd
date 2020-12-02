@@ -11,12 +11,12 @@ includes:
 library(igraph)
 
 ```
-The objective of this website is to study the properties of the Metropolis algorithm; reversibility, irreducibility and aperiodicity. Furthermore, the Metropolis algorithm is implemented with $\mu=1$(no rejection) to simulate the expected travel time for a Hamiltonian circuit chosen uniformly. A Hamiltonian circuit is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point. The algorithm shines when its impossible to sample from $\mu$,
+The objective of this website is to study the properties of the Metropolis algorithm; reversibility, irreducibility and aperiodicity. Furthermore, the Metropolis algorithm is implemented with $\mu=1$(no rejection) to simulate the expected travel time for a Hamiltonian circuit chosen uniformly. A Hamiltonian circuit is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point.
 
 
 There will be five pair of cities for which travel is forbidden. Since there are about ~$20!$ possible circuits(see visual below) the generator is constructed by choosing 2 cities uniformly from c(1:20) from a valid sequence and interchanging them to create a brand new sequence given the proposed sequence granted it is also valid.  
 
-To put it in layman's terms; an tourist wishes to leave his city to travel to 19 cities and then return home, and only wants to stay at each city once. Furthermore, a few cities do not directly link to one another directly. We aim to compute the average amount of time that it would take for our tourist to complete his trip, assuming that our tourist is whimsical and lets chance decide where his next destination is.    
+To put it in layman's terms; a tourist wishes to leave his city to travel to 19 cities and then return home, and only wants to stay at each city once. Furthermore, a few cities do not directly link to one another directly. We aim to compute the average amount of time that it would take for our tourist to complete his trip, assuming that our tourist is whimsical and lets chance decide where his next destination is.    
 
 ```{r echo=FALSE, webgl=TRUE, fig.width=12, fig.height=12, fig.align="center", fig.cap="2-D Graph with 20 vertices and 185 edges."}
 D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
