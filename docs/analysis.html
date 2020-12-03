@@ -389,7 +389,8 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 5px;}
 <h3>Objective</h3>
 <p>An abstract for our project is available on our <a href="index.html">home page</a>. On this page we are going to discuss the R simulation that computes the mean travel time of <span class="math inline">\(m+1\)</span> circuits identically distributed uniformly at random. <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> will be parameters to our simulation where <span class="math inline">\(n\)</span> is number of trials until equilibrium from which the expectation of the next <span class="math inline">\(m\)</span> can be worked out in this fashion, <span class="math display">\[ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)\]</span> <br> Towards this goal we first label 20 cities numerically from 1:20</p>
 <pre class="r"><code>U &lt;-c(1:20) #vertices</code></pre>
-<p>In graph terminology these are our vertices and will make up the elements within our state space. Next we resolve the issue of forbidden travel and the missing component of our Hamiltonian graph, edges.</p>
+<p>In graph terminology these are our vertices and will make up the elements within our state space. Next we resolve the issue of forbidden travel and the missing component of our Hamiltonian graph, edges.<br />
+<br></p>
 </div>
 <div id="distance-matrix" class="section level3">
 <h3>Distance Matrix</h3>
@@ -410,7 +411,7 @@ diag(D) &lt;- rep(0,20) #diagonals are 0</code></pre>
 </div>
 <div id="algorithm" class="section level3">
 <h3>Algorithm</h3>
-<p>Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our <span class="math inline">\(Q\)</span>. As mentioned above, the most prudent idea as suggested is a method which picks two points uniformly at random and interchanges them. The code chunck below is portion of the function that accomplishes this task and our broader <a href="#objective">objective</a>.</p>
+<p>Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our <span class="math inline">\(Q\)</span>. As mentioned above, the most prudent idea as suggested is a method which picks two points uniformly at random and interchanges them. The code chunck below is portion of the function that accomplishes this task and our broader <a href="#objective">objective</a>. For a more comprehensive glance at the code refer to the <a href="#appendix">appendix</a></p>
 <pre class="r"><code>tspMCMC &lt;- function(n,m){
 v &lt;- sample(U,size = 20, replace=FALSE) #without repetition sample first sequence
 while(indicatorPermissible(v)==0){#make sure its valid
@@ -444,7 +445,7 @@ while(i &lt;= m+n){
   }
 }
 }</code></pre>
-There is alot to unpack but very concisely it takes two arguments <span class="math inline">\(n\)</span>(integer) and <span class="math inline">\(m\)</span>(integer). We then randomly samples a sequence without-repetition which we check is valid and add to our record of the sampled sequence. From there we sample two points, extracts their place in the sequence and use the last record valid sequence, <span class="math inline">\(X_{i}\)</span> to propose a new sequence. Since we are using a Metropolis with <span class="math inline">\(\mu = 1\)</span>(i.e. no rejection) we are only responsible for checking the sequence <span class="math inline">\(X_{i+1}\)</span> is valid. This is where <em>indicatorPermissable(<span class="math inline">\(X_{i+1}\)</span>)</em> comes in. It’s the responsibility of the <em>indicatorPermissable</em> function to return <span class="math inline">\(0\)</span> if the proposed interchange creates a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns <span class="math inline">\(1\)</span> we accept the new sequence as valid and add it to the record(i.e <em>list</em>) of valid circuits and increment <span class="math inline">\(i[1]\)</span>.Furthermore if we have already reached equilibrium or <span class="math inline">\(n\)</span> trials, we also start computing the travel times by passing the sequence to a function called <em>distance_travelled</em>.
+There is alot to unpack but very concisely we take two arguments <span class="math inline">\(n\)</span>(integer) and <span class="math inline">\(m\)</span>(integer). We then randomly sample an initial sequence<span class="math inline">\(X_1\)</span> without-repetition which we check is valid and add to our record of sampled sequences. From there we sample two points, extracts their place in the sequence and use the last recorded valid sequence, <span class="math inline">\(X_{i}\)</span> to propose a new sequence. Since we are using a Metropolis with <span class="math inline">\(\mu = 1\)</span>(i.e. no rejection), we are only responsible for checking that the propose sequence <span class="math inline">\(X_{i+1}\)</span> is valid. This is where <em>indicatorPermissable(<span class="math inline">\(X_{i+1}\)</span>)</em> comes in. It’s the responsibility of the <em>indicatorPermissable</em> function to return <span class="math inline">\(0\)</span> if the proposed interchange will create a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns <span class="math inline">\(1\)</span>, we accept the new sequence as valid and add it to the record(i.e <em>list</em>) of valid circuits and increment <span class="math inline">\(i[1]\)</span>.Furthermore if we have already reached equilibrium or <span class="math inline">\(n\)</span> trials, we also start computing the travel times by passing the sequence to a function called <em>distance_travelled</em>.
 <div class="blue">
 <p>[1]As you can see in the code chunk above, our control sequence of choice is a while loop. The reason being, unlike a for-loop we have more control on our index <span class="math inline">\(i\)</span>.For example, until the simulation reaches equilibrium we aren’t entirely concerned with repeat sequences. When we go to compute travel-times(<span class="math inline">\(i \geq n\)</span>) however we control for repeat samples by ignoring trials for which <em>indicatorPermissable</em> returns 0 and trying again at index <span class="math inline">\(i\)</span>.</p>
 </div>
@@ -452,27 +453,28 @@ There is alot to unpack but very concisely it takes two arguments <span class="m
 </div>
 <div id="observations" class="section level3">
 <h3>Observations</h3>
-<p>Now let us test the algorithm using the same arbitrary forbidden cities from above and a <span class="math inline">\(Uni(0,1)\)</span> distributed distance matrix, additionally choose <span class="math inline">\(n=1000\)</span> and <span class="math inline">\(m=5000\)</span></p>
+<p>Now let us test the algorithm using the same arbitrary forbidden cities from above and a <span class="math inline">\(Uni(0,1)\)</span> distributed distance matrix, additionally choose <span class="math inline">\(n=150\)</span> and <span class="math inline">\(m=250\)</span> as a starting point for our bounds.</p>
 <pre class="r"><code>tspMCMC(150,250)</code></pre>
-<pre><code>## [1] 9.457152</code></pre>
-<p>Furthermore re-initializing our graph but keeping the distance matrix fixed we can observe the results for multiple arbitrary choices of n and m.</p>
+<pre><code>## Average Return Time: 9.525735 units</code></pre>
+<p>Furthermore re-initializing our graph but keeping the distance matrix fixed for multiple arbitrary choices of n and m.</p>
 <pre class="r"><code>tspMCMC(150,250)
 tspMCMC(250,500)
 tspMCMC(500,1000)
 tspMCMC(1000,2000)</code></pre>
 <pre><code>## tspMCM( 150 , 250 ) 
-## Rejection Counter:  46 
-## Average Return Time: 9.00992 units</code></pre>
+## Rejection Counter:  29 
+## Average Return Time: 9.5352 units</code></pre>
 <pre><code>## tspMCM( 250 , 500 ) 
-## Rejection Counter:  73 
-## Average Return Time: 9.425643 units</code></pre>
+## Rejection Counter:  78 
+## Average Return Time: 9.857063 units</code></pre>
 <pre><code>## tspMCM( 500 , 1000 ) 
-## Rejection Counter:  156 
-## Average Return Time: 9.249798 units</code></pre>
+## Rejection Counter:  157 
+## Average Return Time: 9.598548 units</code></pre>
 <pre><code>## tspMCM( 1000 , 2000 ) 
-## Rejection Counter:  310 
-## Average Return Time: 9.262345 units</code></pre>
-<pre><code>## Computational Length: 0.6581919 seconds</code></pre>
+## Rejection Counter:  313 
+## Average Return Time: 9.562509 units</code></pre>
+<pre><code>## Computational Length: 0.3362889 seconds</code></pre>
+<p><br> As you can see in these observations, our mean travel times stays within a band of one unit even as we double or quadruple our bounds <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> and while <span class="math inline">\(D\)</span> is fixed. This variation is inherently linked with the type of positive real density we used to sample <span class="math inline">\(D\)</span>.</p>
 </div>
 <div id="appendix" class="section level3">
 <h3>Appendix</h3>

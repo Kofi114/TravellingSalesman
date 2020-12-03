@@ -23,6 +23,7 @@ Towards this goal we first label 20 cities numerically from 1:20
 U <-c(1:20) #vertices
 ```
 In graph terminology these are our vertices and will make up the elements within our state space. Next we resolve the issue of forbidden travel and the missing component of our Hamiltonian graph, edges.  
+<br>
 
 ### Distance Matrix
 ```{r}
@@ -54,7 +55,7 @@ or in a more proper application handling user input.
 
 ### Algorithm 
 
-Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. As mentioned above, the most prudent idea as suggested is a method which picks two points uniformly at random and interchanges them. The code chunck below is portion of the function that accomplishes this task and our broader [objective](#objective).
+Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. As mentioned above, the most prudent idea as suggested is a method which picks two points uniformly at random and interchanges them. The code chunck below is portion of the function that accomplishes this task and our broader [objective](#objective). For a more comprehensive glance at the code refer to the [appendix](#appendix)
 ```{r eval=FALSE}
 tspMCMC <- function(n,m){
 v <- sample(U,size = 20, replace=FALSE) #without repetition sample first sequence
@@ -90,15 +91,14 @@ while(i <= m+n){
 }
 }
 ```
-There is alot to unpack but very concisely it takes two arguments $n$(integer) and $m$(integer). We then randomly samples a sequence without-repetition which we check is valid and add to our record of the sampled sequence. From there we sample two points, extracts their place in the sequence and use the last record valid sequence, $X_{i}$ to propose a new sequence. Since we are using a Metropolis with $\mu = 1$(i.e. no rejection) we are only responsible for checking the sequence $X_{i+1}$ is valid. This is where *indicatorPermissable($X_{i+1}$)* comes in. It's the responsibility of the *indicatorPermissable* function to return $0$ if the proposed interchange creates a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns $1$ we accept the new sequence as valid and add it to the record(i.e *list*) of valid circuits and increment $i[1]$.Furthermore if we have already reached equilibrium or $n$ trials, we also start computing the travel times by passing the sequence to a function called *distance_travelled*. 
+There is alot to unpack but very concisely we take two arguments $n$(integer) and $m$(integer). We then randomly sample an initial sequence$X_1$ without-repetition which we check is valid and add to our record of sampled sequences. From there we sample two points, extracts their place in the sequence and use the last recorded valid sequence, $X_{i}$ to propose a new sequence. Since we are using a Metropolis with $\mu = 1$(i.e. no rejection), we are only responsible for checking that the propose sequence $X_{i+1}$ is valid. This is where *indicatorPermissable($X_{i+1}$)* comes in. It's the responsibility of the *indicatorPermissable* function to return $0$ if the proposed interchange will create a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns $1$, we accept the new sequence as valid and add it to the record(i.e *list*) of valid circuits and increment $i[1]$.Furthermore if we have already reached equilibrium or $n$ trials, we also start computing the travel times by passing the sequence to a function called *distance_travelled*. 
 <div class="blue">
 [1]As you can see in the code chunk above, our control sequence of choice is a while loop. The reason being, unlike a for-loop we have more control on our index $i$.For example, until the simulation reaches equilibrium we aren't entirely concerned with repeat sequences. When we go to compute travel-times($i \geq n$) however we control for repeat samples by ignoring trials for which *indicatorPermissable* returns 0 and trying again at index $i$. 
 </div>
-
 <br>
 
 ### Observations
-Now let us test the algorithm using the same arbitrary forbidden cities from above and a $Uni(0,1)$ distributed distance matrix, additionally choose $n=1000$ and $m=5000$ 
+Now let us test the algorithm using the same arbitrary forbidden cities from above and a $Uni(0,1)$ distributed distance matrix, additionally choose $n=150$ and $m=250$ as a starting point for our bounds. 
 ```{r eval=FALSE}
 tspMCMC(150,250)
 
@@ -171,11 +171,11 @@ while(i <= m+n){
   }
 }
    answer <- mean(travel_time)
-   return(answer)
+   cat("Average Return Time:", answer, "units" , "\n")
 }
 tspMCMC(1000,5000)
 ```
-Furthermore re-initializing our graph but keeping the distance matrix fixed we can observe the results for multiple arbitrary choices of n and m.
+Furthermore re-initializing our graph but keeping the distance matrix fixed for multiple arbitrary choices of n and m.
 ```{r eval=FALSE}
 tspMCMC(150,250)
 tspMCMC(250,500)
@@ -261,6 +261,8 @@ tspMCMC(500,1000)
 tspMCMC(1000,2000)
 cat("Computational Length:", Sys.time()-start, "seconds", "\n")
 ```
+<br> 
+As you can see in these observations, our mean travel times stays within a band of one unit even as we double or quadruple our bounds $n$ and $m$ and while $D$ is fixed. This variation is inherently linked with the type of positive real density we used to sample $D$. 
 
 ### Appendix 
 
