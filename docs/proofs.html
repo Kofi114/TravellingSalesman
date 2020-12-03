@@ -354,7 +354,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Introduction</a>
+      <a class="navbar-brand" href="index.html">Summary</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -362,7 +362,7 @@ div.tocify {
   <a href="proofs.html">Proofs</a>
 </li>
 <li>
-  <a href="analysis.html">Analysis</a>
+  <a href="tspMCMC.html">Travelling Salesperson</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -381,10 +381,15 @@ div.tocify {
 </div>
 
 
-<p>Where <span class="math inline">\(p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}\)</span></p>
+<p>Let <span class="math inline">\(Q\)</span> be an irreducible symmetric transition matrix and <span class="math display">\[ p_{ij} =  \left\{
+    \begin{array}{l}
+      q_{ij}\,min(1,\frac{\mu_j}{\mu_i}), \:\: j \neq i\\
+      1 - \sum_{k \neq i} q_{ik} \, min(1, \frac{\mu_k}{\mu_i}), \:\: j=i
+    \end{array}
+  \right.\ \]</span></p>
 <div id="task-1--reversibility-of-mu" class="section level2">
 <h2>Task 1- Reversibility of <span class="math inline">\(\mu\)</span></h2>
-<p><em>Write out a proof that P is reversible with respect to <span class="math inline">\(\mu\)</span>. Conclude that <span class="math inline">\(\mu\)</span> is an invariant probability distribution for P.</em> <br><br> <span class="math inline">\(\underline{Solution}:\)</span> <br> For <span class="math inline">\(P\)</span> to be irreducible with respect to <span class="math inline">\(\mu\)</span>, we must show that:</p>
+<p><em>Write out a proof that P is reversible with respect to <span class="math inline">\(\mu\)</span>. Conclude that <span class="math inline">\(\mu\)</span> is an invariant probability distribution for P.</em> <br><br> <span class="math inline">\(\underline{Proof}:\)</span> <br> For <span class="math inline">\(P\)</span> to be irreducible with respect to <span class="math inline">\(\mu\)</span>, we must show that:</p>
 <p><span class="math display">\[\mu_i p_{ij}=\mu_j p_{ji} \hspace{.5cm} \forall \hspace{.1cm} i,j\]</span></p>
 <p>Recall that <span class="math inline">\(Q\)</span> is symmetric (i.e <span class="math inline">\(q_{ij}=q_{ji}\)</span>), as this is key to the reversibility of <span class="math inline">\(P\)</span>.</p>
 <p>Now, given by the definition of <span class="math inline">\(P\)</span>, we have that:</p>
@@ -401,15 +406,16 @@ div.tocify {
 <p>This case is analogous to that of the first. Notice that this implies that <span class="math inline">\(\frac{\mu_i}{\mu_j}\geq 1\)</span> and <span class="math inline">\(\frac{\mu_j}{\mu_i}\leq 1\)</span></p>
 <p>Therefore, we can conclude that <span class="math display">\[p_{ij}=q_{ij}min(1,\frac{\mu_j}{\mu_i})=q_{ij}\frac{\mu_j}{\mu_i}\]</span> and <span class="math display">\[p_{ji}=q_{ij}min(1,\frac{\mu_i}{\mu_j})=q_{ij}\cdot 1=q_{ij}\]</span> As we did before, let us plug these values of <span class="math inline">\(p_{ij}\)</span> and <span class="math inline">\(p_{ji}\)</span> into the reversibility equality to see if it holds. <span class="math display">\[\mu_i q_{ij}\frac{\mu_j}{\mu_i}=\mu_j q_{ij}\]</span> which simplifies to: <span class="math display">\[\mu_j q_{ij}=\mu_j q_{ij}\]</span></p>
 <p>The equality holds true, and thus the condition for reversibility of <span class="math inline">\(P\)</span> is satisfied.</p>
-<p>As this proof is for any arbitrary states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in <span class="math inline">\(P\)</span>, we can conclude that <span class="math inline">\(P\)</span> is indeed reversible with respect to <span class="math inline">\(\mu\)</span>.</p>
+<p>As this proof is for any arbitrary states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> in <span class="math inline">\(P\)</span>, we can conclude that <span class="math inline">\(P\)</span> is indeed reversible with respect to <span class="math inline">\(\mu\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
+<p><br></p>
 </div>
 </div>
 <div id="task-2---irreduciblity-aperiodicity" class="section level2">
 <h2>Task 2 - Irreduciblity &amp; Aperiodicity</h2>
 <p><em>Write out a proof that that <span class="math inline">\(P\)</span> is irreducible, and that if <span class="math inline">\(\mu\)</span> isn’t perfectly uniform then</em> <em>P is aperiodic. [Hint: Show that if <span class="math inline">\(i \to j\)</span> under <span class="math inline">\(Q\)</span> then <span class="math inline">\(i \to j\)</span> under <span class="math inline">\(P\)</span>. For aperidocity, consider a* *site where where a transition can occur]</em></p>
-<div id="q-is-irreducible" class="section level3">
-<h3><span class="math inline">\(Q\)</span> IS IRREDUCIBLE</h3>
-<p>As established in <a href="#task-1--reversibility-of-mu">Task 1</a>, all the elements of <span class="math inline">\(\mu\)</span> are strictly positive, the ratios <span class="math inline">\(\frac{\mu_i}{\mu_j}\)</span> for any <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:</p>
+<div id="p-is-irreducible" class="section level3">
+<h3><span class="math inline">\(P\)</span> IS IRREDUCIBLE</h3>
+<p><span class="math inline">\(\underline{Proof}:\)</span> <br> As established in <a href="#task-1--reversibility-of-mu">Task 1</a>, all the elements of <span class="math inline">\(\mu\)</span> are strictly positive, the ratios <span class="math inline">\(\frac{\mu_i}{\mu_j}\)</span> for any <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:</p>
 <p><span class="math display">\[min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]</span></p>
 <p>for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
 <p>Now, recall that <span class="math inline">\(P\)</span> being reducible means have a return probability <span class="math inline">\(f_{ij}&gt;0\)</span> for all states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, where:</p>
@@ -418,20 +424,21 @@ div.tocify {
 <p>Now, let the minimum of 1 and the ratio of the <span class="math inline">\(\mu\)</span>’s for each transition from states <span class="math inline">\(i\)</span> to <span class="math inline">\(j\)</span> be <span class="math inline">\(r_{ij}\)</span>:</p>
 <p><span class="math display">\[r_{ij}=min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]</span></p>
 <p><span class="math inline">\(Q\)</span> being irreducible implies at least one of the following two for any two states <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>.</p>
-<p>Case 1: We can transition directly: <span class="math inline">\(q_{ij}&gt;0\)</span></p>
+<p><em>Case 1: We can transition directly: <span class="math inline">\(q_{ij}&gt;0\)</span></em></p>
 <p>In this case, notice that <span class="math inline">\(p_{ij}=q_{ij}\cdot r_{ij}\)</span>. And as we established <span class="math inline">\(r_{ij}&gt;0\)</span>, we can conclude that <span class="math inline">\(p_{ij}&gt;0\)</span>. Notice that this implies that <span class="math inline">\(f_{ij}&gt;0\)</span></p>
-<p>Case 2: We reach <span class="math inline">\(j\)</span> from <span class="math inline">\(i\)</span> indirectly: <span class="math inline">\(i\to a_1 \to a_2 \to ... \to a_n \to j\)</span> In this case, we clearly have that <span class="math inline">\(q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}&gt;0\)</span></p>
+<p><em>Case 2: We reach <span class="math inline">\(j\)</span> from <span class="math inline">\(i\)</span> indirectly: <span class="math inline">\(i\to a_1 \to a_2 \to ... \to a_n \to j\)</span></em></p>
+<p>In this case, we clearly have that <span class="math inline">\(q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}&gt;0\)</span></p>
 <p>Recall that as all our <span class="math inline">\(\mu\)</span> ratios are strictly positive, we can claim that:</p>
 <p><span class="math display">\[r_{ia_{1}}q_{ia_{1}}\cdot r_{a_{1}a_{2}}q_{a_{1}a_{2}}\cdot ...\cdot r_{a_{n-1}a_{n}}q_{a_{n-1}a_{n}}\cdot r_{a_{n}j}q_{a_{n}j}&gt;0\]</span></p>
 <p>Notice that this is just another way of expressing:</p>
 <p><span class="math display">\[p_{ia_{1}}\cdot p_{a_{1}a_{2}}\cdot ...\cdot p_{a_{n-1}a_{n}}\cdot p_{a_{n}j}&gt;0\]</span></p>
 <p>Which implies that <span class="math inline">\(f_{ij}&gt;0\)</span>.</p>
 <p>Needless to say, there is a the third case where <span class="math inline">\(i\)</span> can reach <span class="math inline">\(j\)</span> both directly and indirectly, and we see by the two cases above that we also get <span class="math inline">\(f_{ij}&gt;0\)</span>.</p>
-<p>By the cases we went through above, we now know that if two states communicate under <span class="math inline">\(Q\)</span>, then they also communicate under <span class="math inline">\(P\)</span>. Now, as <span class="math inline">\(Q\)</span> is irreducible, all its states communicate, and thus all of <span class="math inline">\(P\)</span>’s states communicate. <span class="math inline">\(P\)</span> is irreducible.</p>
+<p>By the cases we went through above, we now know that if two states communicate under <span class="math inline">\(Q\)</span>, then they also communicate under <span class="math inline">\(P\)</span>. Now, as <span class="math inline">\(Q\)</span> is irreducible, all its states communicate, and thus all of <span class="math inline">\(P\)</span>’s states communicate. <span class="math inline">\(P\)</span> is irreducible. <span class="math inline">\(\blacksquare\)</span> <br></p>
 </div>
 <div id="p-is-aperiodic-for-non-uniform-mu" class="section level3">
 <h3><span class="math inline">\(P\)</span> IS APERIODIC FOR NON-UNIFORM <span class="math inline">\(\mu\)</span></h3>
-<p>For <span class="math inline">\(\mu\)</span> that is not uniform, there exists a maximum element (not necessarily unique) <span class="math inline">\(\mu_t\)</span> for some state <span class="math inline">\(t\)</span>. Let us show that <span class="math inline">\(p_{tt}&gt;0\)</span> in order to prove that <span class="math inline">\(t\)</span> is an aperiodic state. Recall define diagonals in <span class="math inline">\(P\)</span> as:</p>
+<p><span class="math inline">\(\underline{Proof}:\)</span> <br> For <span class="math inline">\(\mu\)</span> that is not uniform, there exists a maximum element (not necessarily unique) <span class="math inline">\(\mu_t\)</span> for some state <span class="math inline">\(t\)</span>. Let us show that <span class="math inline">\(p_{tt}&gt;0\)</span> in order to prove that <span class="math inline">\(t\)</span> is an aperiodic state. Recall the definition of diagonals in <span class="math inline">\(P\)</span> as:</p>
 <p><span class="math display">\[p_{tt}=1-\sum_{k\neq t}q_{tk}\cdot min(1,\frac{\mu_k}{\mu_t})=1-\sum_{k\neq t}q_{tk}\cdot r_{kt}\]</span></p>
 <p>As we know that <span class="math inline">\(\mu_t \geq \mu_k\)</span> for all states <span class="math inline">\(k\)</span> (strictly greater for at least some cases, as this is not a uniform <span class="math inline">\(\mu\)</span>), we have that</p>
 <p><span class="math display">\[r_{kt}\leq 1\]</span></p>
@@ -446,13 +453,14 @@ div.tocify {
 <p><span class="math display">\[P(U\leq\frac{\mu_j}{\mu_t})=\frac{\mu_j}{\mu_t}&lt;1\]</span></p>
 <p>and thus the probability of rejecting the transition is:</p>
 <p><span class="math display">\[1-P(U\leq\frac{\mu_j}{\mu_t})=1-\frac{\mu_j}{\mu_t}&gt;0\]</span></p>
-<p>which in turn implies that we can stay at <span class="math inline">\(t\)</span> with positive probability (i.e <span class="math inline">\(p_{tt}&gt;0\)</span>).</p>
+<p>which in turn implies that we can stay at <span class="math inline">\(t\)</span> with positive probability (i.e <span class="math inline">\(p_{tt}&gt;0\)</span>).<span class="math inline">\(\blacksquare\)</span></p>
+<p><br></p>
 </div>
 </div>
 <div id="task-3---symmetry-of-q" class="section level2">
 <h2>Task 3 - Symmetry of Q</h2>
 <p><em>Check that <span class="math inline">\(Q\)</span> is symmetric.</em></p>
-<p>Let us make a quick review of how our algorithm works. Let us say we start at an arbitrary state <span class="math inline">\(i\)</span> (i.e a sequence of 20 cities) with no forbidden travel. From there, our algorithm will, at random, pick two cities, say 1 and 7. It will then switch the location of these two cities in our current Hamiltonian Circuit, checking if the switch introduces any forbidden travel. If it does not, then we have arrived at a new state, call it <span class="math inline">\(j\)</span>.</p>
+<p><span class="math inline">\(\underline{Proof}:\)</span> <br> Let us make a quick review of how our algorithm works. Let us say we start at an arbitrary state <span class="math inline">\(i\)</span> (i.e a sequence of 20 cities) with no forbidden travel. From there, our algorithm will, at random, pick two cities, say 1 and 7. It will then switch the location of these two cities in our current Hamiltonian Circuit, checking if the switch introduces any forbidden travel. If it does not, then we have arrived at a new state, call it <span class="math inline">\(j\)</span>.</p>
 <p>Now, if we were at this state <span class="math inline">\(j\)</span>, going back to state <span class="math inline">\(i\)</span> would imply going through the exact same procedure again. We would need our algorithm to pick the pair 1 and 7 as we initially did, then switch their locations, leaving us back at <span class="math inline">\(i\)</span>. Therefore, we have:</p>
 <p><span class="math display">\[p_{ij}=p_{ji}&gt;0\]</span></p>
 <p>In fact, since our algorithm gives each city an equal probability of being chosen, any switch from <span class="math inline">\(i\)</span> is of equal probability (if we do without the caveat of forbidden travel, of course).</p>
@@ -461,7 +469,7 @@ div.tocify {
 <p>and let another state <span class="math inline">\(b\)</span> have the first six cities:</p>
 <p><span class="math display">\[10,5,12,18,3,9,...\]</span></p>
 <p>As should be obvious by the first six cities of each, there is no switch of two cities such that <span class="math inline">\(a\)</span> becomes <span class="math inline">\(b\)</span>. Therefore, <span class="math inline">\(p_{ab}=0\)</span>. Analogously, the converse also is not possible. If there is no switch that allows <span class="math inline">\(a\)</span> to become <span class="math inline">\(b\)</span>, then the same is true for <span class="math inline">\(b\)</span> to <span class="math inline">\(a\)</span>. Recall that we showed earlier that the switch that takes us from state <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span> (assuming it is possible), would be the exact same switch required to move from state <span class="math inline">\(b\)</span> to <span class="math inline">\(a\)</span>. Thus in this case: <span class="math display">\[p_{ab}=p_{ba}=0\]</span></p>
-<p>Therefore, given that the cases of positive probability and zero probability of transitions covers the entirety of options, we see that <span class="math inline">\(Q\)</span> must be symmetric.</p>
+<p>Therefore, given that the cases of positive probability and zero probability of transitions covers the entirety of options, we see that <span class="math inline">\(Q\)</span> must be symmetric. <span class="math inline">\(\blacksquare\)</span></p>
 <p><br></p>
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;">
 

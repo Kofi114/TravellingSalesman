@@ -278,7 +278,7 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Introduction</a>
+      <a class="navbar-brand" href="index.html">Summary</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -286,7 +286,7 @@ $(document).ready(function () {
   <a href="proofs.html">Proofs</a>
 </li>
 <li>
-  <a href="analysis.html">Analysis</a>
+  <a href="tspMCMC.html">Travelling Salesperson</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -305,13 +305,12 @@ $(document).ready(function () {
 </div>
 
 
-<p>The objective of this website is to study the properties of the Metropolis algorithm; reversibility, irreducibility and aperiodicity. Furthermore, the Metropolis algorithm is implemented with <span class="math inline">\(\mu=1\)</span>(no rejection) to simulate the expected travel time for a Hamiltonian circuit chosen uniformly. A Hamiltonian circuit is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point.</p>
-<p>There will be five pair of cities for which travel is forbidden. Since there are about ~<span class="math inline">\(20!\)</span> possible circuits(see visual below) the generator is constructed by choosing 2 cities uniformly from c(1:20) from a valid sequence and interchanging them to create a brand new sequence given the proposed sequence granted it is also valid.</p>
+<p>The objective of this website is to prove the properties of the Metropolis algorithm with probability distribution <span class="math inline">\(\mu\)</span>; reversibility, irreducibility and aperiodicity. Furthermore we also extend the properties of the Metropolis algorithm with a probability distribution <span class="math inline">\(\mu = 1\)</span>(no rejection) to the <a href="https://en.wikipedia.org/wiki/Travelling_salesman_problem">Travelling Salesperson Problem</a>. The classic problem is to find the shortest possible Hamiltonian circuit, where a <em>Hamiltonian circuit</em> is defined as a sequence which starts at a predefined vertex, visits every other vertex in the state space once and returns to its start point. The application of the algorithm we explore is approximating the expected travel time of Hamiltonian circuits chosen uniformly with the added caveat of forbidden travel(i.e. sampling from a non-complete graph).</p>
 <p>To put it in layman’s terms; a tourist wishes to leave his city to travel to 19 cities and then return home, and only wants to stay at each city once. Furthermore, a few cities do not directly link to one another directly. We aim to compute the average amount of time that it would take for our tourist to complete his trip, assuming that our tourist is whimsical and lets chance decide where his next destination is.</p>
 <div class="figure" style="text-align: center">
-<img src="index_files/figure-html/unnamed-chunk-2-1.png" alt="2-D Graph with 20 vertices and 185 edges." width="1152" />
+<img src="index_files/figure-html/unnamed-chunk-2-1.png" alt="Non-complete graph with 20 vertices and 185 edges." width="1152" />
 <p class="caption">
-2-D Graph with 20 vertices and 185 edges.
+Non-complete graph with 20 vertices and 185 edges.
 </p>
 </div>
 

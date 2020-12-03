@@ -1,11 +1,11 @@
 name: "Metropolis Algorithm for Expectations"
 output_dir: "docs"
 navbar:
-  title: Introduction
+  title: Summary
   href: index.html
   left:
     - text: "Proofs"
       href: proofs.html
-    - text: "Analysis"
-      href: analysis.html 
+    - text: "Travelling Salesperson"
+      href: tspMCMC.html 
 

@@ -11,12 +11,17 @@ output:
     includes:
       after_body: footer.html
 ---
-Where $p_{ij}=\{q_{ij}min(1,\frac{u_j}{u_i})\}$
+Let $Q$ be an irreducible symmetric transition matrix and $$ p_{ij} =  \left\{
+    \begin{array}{l}
+      q_{ij}\,min(1,\frac{\mu_j}{\mu_i}), \:\: j \neq i\\
+      1 - \sum_{k \neq i} q_{ik} \, min(1, \frac{\mu_k}{\mu_i}), \:\: j=i
+    \end{array}
+  \right.\ $$
 
 ## Task 1- Reversibility of $\mu$
 *Write out a proof that P is reversible with respect to $\mu$. Conclude that $\mu$ is an invariant probability distribution for P.*
 <br><br>
-$\underline{Solution}:$
+$\underline{Proof}:$
 <br>
 For $P$ to be irreducible with respect to $\mu$, we must show that:
 
@@ -62,16 +67,18 @@ which simplifies to:
     
 The equality holds true, and thus the condition for reversibility of $P$ is satisfied.
     
-As this proof is for any arbitrary states $i$ and $j$ in $P$, we can conclude that $P$ is indeed reversible with respect to $\mu$.
+As this proof is for any arbitrary states $i$ and $j$ in $P$, we can conclude that $P$ is indeed reversible with respect to $\mu$. $\blacksquare$
 
+<br>
 
 ## Task 2 - Irreduciblity & Aperiodicity 
 
 *Write out a proof that that $P$ is irreducible, and that if $\mu$ isn't perfectly uniform then* 
 *P is aperiodic. [Hint: Show that if $i \to j$ under $Q$ then $i \to j$ under $P$. For aperidocity, consider a* *site where where a transition can occur]*
 
-### $Q$ IS IRREDUCIBLE
-
+### $P$ IS IRREDUCIBLE
+$\underline{Proof}:$
+<br>
 As established in [Task 1](#task-1--reversibility-of-mu), all the elements of $\mu$ are strictly positive, the ratios $\frac{\mu_i}{\mu_j}$ for any $i$ and $j$ can range from an arbitrarily small real number near zero to an arbitrarily large real number. As a result:
 
 \[min(1,\frac{\mu_i}{\mu_j})\in(0,1]\]
@@ -93,11 +100,12 @@ Now, let the minimum of 1 and the ratio of the $\mu$'s for each transition from 
 $Q$ being irreducible implies at least one of the following two for any two states $i$ and $j$.
 
 
-Case 1: We can transition directly: $q_{ij}>0$
+*Case 1: We can transition directly: $q_{ij}>0$*
 
 In this case, notice that $p_{ij}=q_{ij}\cdot r_{ij}$. And as we established $r_{ij}>0$, we can conclude that $p_{ij}>0$. Notice that this implies that $f_{ij}>0$
     
-Case 2: We reach $j$ from $i$ indirectly: $i\to a_1 \to a_2 \to ... \to a_n \to j$
+*Case 2: We reach $j$ from $i$ indirectly: $i\to a_1 \to a_2 \to ... \to a_n \to j$*
+
 In this case, we clearly have that $q_{ia_{1}}\cdot q_{a_{1}a_{2}}\cdot ...\cdot q_{a_{n-1}a_{n}}\cdot q_{a_{n}j}>0$
     
 Recall that as all our $\mu$ ratios are strictly positive, we can claim that:
@@ -115,13 +123,13 @@ Which implies that $f_{ij}>0$.
 
 Needless to say, there is a the third case where $i$ can reach $j$ both directly and indirectly, and we see by the two cases above that we also get $f_{ij}>0$.
 
-By the cases we went through above, we now know that if two states communicate under $Q$, then they also communicate under $P$. Now, as $Q$ is irreducible, all its states communicate, and thus all of $P$'s states communicate. $P$ is irreducible.
-
-
+By the cases we went through above, we now know that if two states communicate under $Q$, then they also communicate under $P$. Now, as $Q$ is irreducible, all its states communicate, and thus all of $P$'s states communicate. $P$ is irreducible. $\blacksquare$
+<br>
 
 ### $P$ IS APERIODIC FOR NON-UNIFORM $\mu$ 
-
-For $\mu$ that is not uniform, there exists a maximum element (not necessarily unique) $\mu_t$ for some state $t$. Let us show that $p_{tt}>0$ in order to prove that $t$ is an aperiodic state. Recall define diagonals in $P$ as:
+$\underline{Proof}:$
+<br>
+For $\mu$ that is not uniform, there exists a maximum element (not necessarily unique) $\mu_t$ for some state $t$. Let us show that $p_{tt}>0$ in order to prove that $t$ is an aperiodic state. Recall the definition of diagonals in $P$ as:
 
 \[p_{tt}=1-\sum_{k\neq t}q_{tk}\cdot min(1,\frac{\mu_k}{\mu_t})=1-\sum_{k\neq t}q_{tk}\cdot r_{kt}\]
 
@@ -151,12 +159,15 @@ and thus the probability of rejecting the transition is:
 
 \[1-P(U\leq\frac{\mu_j}{\mu_t})=1-\frac{\mu_j}{\mu_t}>0\]
 
-which in turn implies that we can stay at $t$ with positive probability (i.e $p_{tt}>0$).
+which in turn implies that we can stay at $t$ with positive probability (i.e $p_{tt}>0$).$\blacksquare$
 
+<br> 
 
 ## Task 3 - Symmetry of Q
 *Check that $Q$ is symmetric.*
 
+$\underline{Proof}:$
+<br>
 Let us make a quick review of how our algorithm works. Let us say we start at an arbitrary state $i$ (i.e a sequence of 20 cities) with no forbidden travel. From there, our algorithm will, at random, pick two cities, say 1 and 7. It will then switch the location of these two cities in our current Hamiltonian Circuit, checking if the switch introduces any forbidden travel. If it does not, then we have arrived at a new state, call it $j$. 
 
 Now, if we were at this state $j$, going back to state $i$ would imply going through the exact same procedure again. We would need our algorithm to pick the pair 1 and 7 as we initially did, then switch their locations, leaving us back at $i$. Therefore, we have:
@@ -177,7 +188,7 @@ and let another state $b$ have the first six cities:
 As should be obvious by the first six cities of each, there is no switch of two cities such that $a$ becomes $b$. Therefore, $p_{ab}=0$. Analogously, the converse also is not possible. If there is no switch that allows $a$ to become $b$, then the same is true for $b$ to $a$. Recall that we showed earlier that the switch that takes us from state $a$ to $b$ (assuming it is possible), would be the exact same switch required to move from state $b$ to $a$. Thus in this case:
 \[p_{ab}=p_{ba}=0\]
 
-Therefore, given that the cases of positive probability and zero probability of transitions covers the entirety of options, we see that $Q$ must be symmetric. 
+Therefore, given that the cases of positive probability and zero probability of transitions covers the entirety of options, we see that $Q$ must be symmetric. $\blacksquare$
 
 
 <br>

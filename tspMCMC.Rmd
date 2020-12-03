@@ -16,7 +16,7 @@ div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 5px;}
 ### Objective
 An abstract for our project is available on our [home page](index.html). On this page we are going to discuss
 the R simulation that computes the mean travel time of 
-$m+1$ circuits identically distributed uniformly at random. $m$ and $n$ will be parameters to our simulation where $n$ is number of trials until equilibrium from which the expectation of the next $m$ can be worked out in this fashion,  $$ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)$$ 
+$m+1$ identically distributed Hamiltonian circuits sampled uniformly at random. $m$ and $n$ will be parameters to our simulation where $n$ is the number of trials until equilibrium from which the $n^{th}$ trial and the next $m$ trials will be used to approximate the true expectation travel time,  $$ \sum_{i} f(i)\mu(i) \approx \frac{1}{m+1} \sum_{k=0}^{m} f(X_k)$$ 
 <br>
 Towards this goal we first label 20 cities numerically from 1:20
 ```{r}
@@ -27,7 +27,7 @@ In graph terminology these are our vertices and will make up the elements within
 
 ### Distance Matrix
 ```{r}
-D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #uniformly distributed distance matrix
+D <- matrix(runif(n=20*20, min=0, max =1), ncol = 20) #non-stochastic uniformly distributed distance matrix
 ```
 We then manually specify 5 pairs $(i,j)$, $i,j \in U$ for which travel is forbidden(i.e. the edge between $i$, $j$ is weighted 0). In the context of our simulation that means a $0$ entry in the distance matrix. 
 ```{r}
@@ -37,14 +37,14 @@ D[1,19]= 0
 D[10,17]= 0  
 D[3,8] = 0 #NO TRAVEL NO DISTANCE
 ```
-We are almost done setting up our graph except for a couple outstanding requirements.First the edge connecting a pair of cities is more than likely not identical.Second, travel from city $i$ to city $i$ for $i \in U$ is greater than $0$ and most importantly we still haven't assigned the other half of the travel restrictions. To satisfy these requirement, we transform $D$ into a symmetric matrix by assigning the lower triangular of $D$ the entries of the upper triangular of the transpose of D and explicitly set the diagonal entries to zero. Thus as you can see there are 185 pairs with positive real distance,  $(19*20)/2 - 5$ from observing $D$ or ${20 \choose 2}-5$. 
+We are almost done setting up our graph except for a couple outstanding requirements.First the edge connecting a pair of cities is more than likely not identical. Second, travel from city $i$ to city $i$ for $i \in U$ is greater than $0$ and most importantly we still haven't assigned the other half of the travel restrictions. To satisfy these requirements, we transform $D$ into a symmetric matrix by assigning the lower triangular of $D$ the entries of the upper triangular of the transpose of D and explicitly set the diagonal entries to zero. Thus as you can see there are 185 pairs of vertices with positive real distance,  $(19*20)/2 - 5$ from observing $D$ or ${20 \choose 2}-5$. 
 ```{r}
 D[lower.tri(D)] = t(D)[lower.tri(D)] #symmetric matrix
 diag(D) <- rep(0,20) #diagonals are 0
 ```
 
 
-Notice that the forbidden pairs were [entered](#distance-matrix) in the form of D[i,j] where i<j or else when we go to make the matrix symmetric the upper triangular entry is still non-zero. This can be remedied by manually making all 10 entries 0, or specifying D[i,j], j<i and assigning the upper-triangular of D with the upper-triangular of the transpose of D
+Notice that the forbidden pairs were [entered](#distance-matrix) in the form of D[i,j] where i<j or else when we go to make the matrix symmetric the upper triangular entry is still non-zero. This can be remedied by manually specifying all 10 entries $0$, or specifying D[i,j], j<i and assigning the upper-triangular of D with the upper-triangular of the transpose of D like this
 ```{r}
 D[upper.tri(D)] = t(D)[upper.tri(D)] #symmetric matrix
 ```
@@ -55,7 +55,7 @@ or in a more proper application handling user input.
 
 ### Algorithm 
 
-Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. As mentioned above, the most prudent idea as suggested is a method which picks two points uniformly at random and interchanges them. The code chunck below is portion of the function that accomplishes this task and our broader [objective](#objective). For a more comprehensive glance at the code refer to the [appendix](#appendix)
+Thus with the vertices set up and the weighted-edges specified, we have initialized our graph. We can now consider our $Q$. The most prudent idea as suggested is a method which picks two points uniformly at random from a valid sequence and interchanges their position. The code chunk below is portion of the function that accomplishes this task and our broader [objective](#objective). For a more comprehensive glance at the code refer to the [Appendix](#appendix).
 ```{r eval=FALSE}
 tspMCMC <- function(n,m){
 v <- sample(U,size = 20, replace=FALSE) #without repetition sample first sequence
@@ -91,9 +91,11 @@ while(i <= m+n){
 }
 }
 ```
-There is alot to unpack but very concisely we take two arguments $n$(integer) and $m$(integer). We then randomly sample an initial sequence$X_1$ without-repetition which we check is valid and add to our record of sampled sequences. From there we sample two points, extracts their place in the sequence and use the last recorded valid sequence, $X_{i}$ to propose a new sequence. Since we are using a Metropolis with $\mu = 1$(i.e. no rejection), we are only responsible for checking that the propose sequence $X_{i+1}$ is valid. This is where *indicatorPermissable($X_{i+1}$)* comes in. It's the responsibility of the *indicatorPermissable* function to return $0$ if the proposed interchange will create a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns $1$, we accept the new sequence as valid and add it to the record(i.e *list*) of valid circuits and increment $i[1]$.Furthermore if we have already reached equilibrium or $n$ trials, we also start computing the travel times by passing the sequence to a function called *distance_travelled*. 
+There is alot to unpack but very concisely we take two arguments $n$ (integer) and $m$ (integer). We then randomly sample an initial sequence $X_1$ without-repetition which we check is valid and add to our record of sampled sequences. From there we sample two points, extracts their place in the sequence and use the last recorded valid sequence, $X_{i}$ to propose a new sequence. Since we are using a Metropolis with $\mu = 1$ (i.e. no rejection), we are only responsible for checking that the proposed sequence $X_{i+1}$ is also valid. This is where *indicatorPermissable ($X_{i+1}$)* comes in. It's the responsibility of the *indicatorPermissable* function to return $0$ if the proposed interchange will create a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns $1$, we accept the new sequence as valid and add it to the record (i.e *list*) of valid circuits and increment $i$.[1] Furthermore if we have already reached equilibrium or $n$ trials, we also start computing the travel times by passing the sequence $X_{[i]}$ to a function called *distance_travelled(X_{i})*.  
+<br><br>
+
 <div class="blue">
-[1]As you can see in the code chunk above, our control sequence of choice is a while loop. The reason being, unlike a for-loop we have more control on our index $i$.For example, until the simulation reaches equilibrium we aren't entirely concerned with repeat sequences. When we go to compute travel-times($i \geq n$) however we control for repeat samples by ignoring trials for which *indicatorPermissable* returns 0 and trying again at index $i$. 
+[1]As you can see in the code chunk above, our control sequence of choice is a while loop. The reason being, unlike a for-loop we have more control on our index $i$.For example, until the simulation reaches equilibrium we aren't entirely concerned with repeat sequences. When we go to compute travel-times($i \geq n$) however we control for repeat samples by ignoring trials for which *indicatorPermissable* returns 0 and trying again at index $i$. The motivation being that our approximation especially at lower bounds will be skewed by many repeat sequences. 
 </div>
 <br>
 
@@ -262,7 +264,7 @@ tspMCMC(1000,2000)
 cat("Computational Length:", Sys.time()-start, "seconds", "\n")
 ```
 <br> 
-As you can see in these observations, our mean travel times stays within a band of one unit even as we double or quadruple our bounds $n$ and $m$ and while $D$ is fixed. This variation is inherently linked with the type of positive real density we used to sample $D$. 
+As you can see in these observations, our mean travel times stays within a band of one unit even as we double or quadruple our bounds $n$ and $m$ and while $D$ is fixed. This variation is inherently linked with the type of positive real density we use to sample $D$. We note that we would observe wilder swings if we used $D \sim Uni(0,200)$ as an example. Furthermore we conclude by settling on bounds $n = 1000$ and $m=2000$ for practical reasons. Even though it is computationally feasible to pass parameters with $n$ and $m$ in the millions, there are $20! = ~2.432902e+18$ sequences rendering such an idea frivolous by the sheer magnitude of our state space $S$. 
 
 ### Appendix 
 
