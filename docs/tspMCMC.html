@@ -445,8 +445,7 @@ while(i &lt;= m+n){
   }
 }
 }</code></pre>
-<p>There is alot to unpack but very concisely we take two arguments <span class="math inline">\(n\)</span> (integer) and <span class="math inline">\(m\)</span> (integer). We then randomly sample an initial sequence <span class="math inline">\(X_1\)</span> without-repetition which we check is valid and add to our record of sampled sequences. From there we sample two points, extracts their place in the sequence and use the last recorded valid sequence, <span class="math inline">\(X_{i}\)</span> to propose a new sequence. Since we are using a Metropolis with <span class="math inline">\(\mu = 1\)</span> (i.e. no rejection), we are only responsible for checking that the proposed sequence <span class="math inline">\(X_{i+1}\)</span> is also valid. This is where <em>indicatorPermissable (<span class="math inline">\(X_{i+1}\)</span>)</em> comes in. It’s the responsibility of the <em>indicatorPermissable</em> function to return <span class="math inline">\(0\)</span> if the proposed interchange will create a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns <span class="math inline">\(1\)</span>, we accept the new sequence as valid and add it to the record (i.e <em>list</em>) of valid circuits and increment <span class="math inline">\(i\)</span>.[1] Furthermore if we have already reached equilibrium or <span class="math inline">\(n\)</span> trials, we also start computing the travel times by passing the sequence <span class="math inline">\(X_{[i]}\)</span> to a function called <em>distance_travelled(X_{i})</em>.<br />
-<br><br></p>
+<p>There is alot to unpack but very concisely we take two arguments <span class="math inline">\(n\)</span> (integer) and <span class="math inline">\(m\)</span> (integer). We then randomly sample an initial sequence <span class="math inline">\(X_1\)</span> without-repetition which we check is valid and add to our record of sampled sequences. From there we sample two points, extracts their place in the sequence and use the last recorded valid sequence, <span class="math inline">\(X_{i}\)</span> to propose a new sequence. Since we are using a Metropolis with <span class="math inline">\(\mu = 1\)</span> (i.e. no rejection), we are only responsible for checking that the proposed sequence <span class="math inline">\(X_{i+1}\)</span> is also valid. This is where <em>indicatorPermissable (<span class="math inline">\(X_{i+1}\)</span>)</em> comes in. It’s the responsibility of the <em>indicatorPermissable</em> function to return <span class="math inline">\(0\)</span> if the proposed interchange will create a sequence where travel between two forbidden cities is introduced. In the case where the indicator returns <span class="math inline">\(1\)</span>, we accept the new sequence as valid and add it to the record (i.e <em>list</em>) of valid circuits and increment <span class="math inline">\(i\)</span>.[1] Furthermore if we have already reached equilibrium or <span class="math inline">\(n\)</span> trials, we also start computing the travel times by passing the sequence <span class="math inline">\(X_{i}\)</span> to a function called <em>distance_travelled(<span class="math inline">\(X_{i}\)</span>)</em>. This function takes the sequence <span class="math inline">\(X_i\)</span> not <span class="math inline">\(X_{i+1}\)</span> so we can compute the travel time for <span class="math inline">\(X_n\)</span> once equilibrium is reached and tallies the distance <span class="math inline">\(i \to i+1\)</span> by starting at i and consulting D[i,i+1] <span class="math inline">\(\forall i \in (1:19)\)</span>. The special case of the endpoint transitions <span class="math inline">\(20 \to 1\)</span> is manually treated. <br><br></p>
 <div class="blue">
 <p>[1]As you can see in the code chunk above, our control sequence of choice is a while loop. The reason being, unlike a for-loop we have more control on our index <span class="math inline">\(i\)</span>.For example, until the simulation reaches equilibrium we aren’t entirely concerned with repeat sequences. When we go to compute travel-times(<span class="math inline">\(i \geq n\)</span>) however we control for repeat samples by ignoring trials for which <em>indicatorPermissable</em> returns 0 and trying again at index <span class="math inline">\(i\)</span>. The motivation being that our approximation especially at lower bounds will be skewed by many repeat sequences.</p>
 </div>
@@ -456,26 +455,26 @@ while(i &lt;= m+n){
 <h3>Observations</h3>
 <p>Now let us test the algorithm using the same arbitrary forbidden cities from above and a <span class="math inline">\(Uni(0,1)\)</span> distributed distance matrix, additionally choose <span class="math inline">\(n=150\)</span> and <span class="math inline">\(m=250\)</span> as a starting point for our bounds.</p>
 <pre class="r"><code>tspMCMC(150,250)</code></pre>
-<pre><code>## Average Return Time: 10.17139 units</code></pre>
+<pre><code>## Average Return Time: 10.6136 units</code></pre>
 <p>Furthermore re-initializing our graph but keeping the distance matrix fixed for multiple arbitrary choices of n and m.</p>
 <pre class="r"><code>tspMCMC(150,250)
 tspMCMC(250,500)
 tspMCMC(500,1000)
 tspMCMC(1000,2000)</code></pre>
 <pre><code>## tspMCM( 150 , 250 ) 
-## Rejection Counter:  59 
-## Average Return Time: 10.19494 units</code></pre>
+## Rejection Counter:  41 
+## Average Return Time: 9.986814 units</code></pre>
 <pre><code>## tspMCM( 250 , 500 ) 
-## Rejection Counter:  72 
-## Average Return Time: 10.61898 units</code></pre>
+## Rejection Counter:  88 
+## Average Return Time: 10.09586 units</code></pre>
 <pre><code>## tspMCM( 500 , 1000 ) 
-## Rejection Counter:  162 
-## Average Return Time: 10.56016 units</code></pre>
+## Rejection Counter:  168 
+## Average Return Time: 10.08226 units</code></pre>
 <pre><code>## tspMCM( 1000 , 2000 ) 
-## Rejection Counter:  312 
-## Average Return Time: 10.54027 units</code></pre>
-<pre><code>## Computational Length: 0.370065 seconds</code></pre>
-<p><br> As you can see in these observations, our mean travel times stays within a band of one unit even as we double or quadruple our bounds <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> and while <span class="math inline">\(D\)</span> is fixed. This variation is inherently linked with the type of positive real density we use to sample <span class="math inline">\(D\)</span>. We note that we would observe wilder swings if we used <span class="math inline">\(D \sim Uni(0,200)\)</span> as an example. Furthermore we conclude by settling on bounds <span class="math inline">\(n = 1000\)</span> and <span class="math inline">\(m=2000\)</span> for practical reasons. Even though it is computationally feasible to pass parameters with <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> in the millions, there are <span class="math inline">\(~20! = ~2.432902e+18\)</span> sequences rendering such an idea frivolous by the sheer magnitude of our state space <span class="math inline">\(S\)</span>.</p>
+## Rejection Counter:  314 
+## Average Return Time: 10.09558 units</code></pre>
+<pre><code>## Computational Length: 0.3000782 seconds</code></pre>
+<p><br> As you can see in these observations, our mean travel times stays within a band of one unit even as we double or quadruple our bounds <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> and while <span class="math inline">\(D\)</span> is fixed. This variation is inherently linked with the type of positive real density we use to sample <span class="math inline">\(D\)</span>. We note that we would observe wilder swings if we used <span class="math inline">\(D \sim Uni(0,200)\)</span> as an example. Furthermore we conclude by settling on bounds <span class="math inline">\(n = 1000\)</span> and <span class="math inline">\(m=2000\)</span> for practical reasons. Even though it is computationally feasible to pass parameters with <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span> in the millions, there are <span class="math inline">\(20! = ~2.432902e+18\)</span> sequences rendering such an idea frivolous by the sheer magnitude of our state space <span class="math inline">\(S\)</span>.</p>
 </div>
 <div id="appendix" class="section level3">
 <h3>Appendix</h3>
